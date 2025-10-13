@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.movieboxxd.movie.domain.models.Movie
-import com.example.movieboxxd.ui.detail.components.MovieCoverImage
+import com.example.movieboxxd.ui.components.MovieCoverImage
 import com.example.movieboxxd.ui.theme.BackgroundColor
 import com.example.movieboxxd.ui.theme.Padding
 

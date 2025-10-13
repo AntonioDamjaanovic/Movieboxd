@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.FollowTheSigns
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -47,12 +47,14 @@ fun MovieDetailScreen(
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize().padding(Padding.default)
             ) {
                 Text(
                     text = state.error ?: "Unknown error",
                     color = MaterialTheme.colorScheme.error,
-                    maxLines = 2
+                    maxLines = 2,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -63,6 +65,7 @@ fun MovieDetailScreen(
                 val boxHeight = maxHeight
                 val topItemHeight = boxHeight * .3f
                 val bodyItemHeight = boxHeight * .7f
+
                 state.movieDetail?.let { movieDetail ->
                     DetailTopContent(
                         movieDetail = movieDetail,

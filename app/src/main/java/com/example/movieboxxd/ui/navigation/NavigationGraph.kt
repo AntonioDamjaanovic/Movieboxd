@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.movieboxxd.ui.detail.MovieDetailScreen
 import com.example.movieboxxd.ui.home.HomeScreen
+import com.example.movieboxxd.ui.person.PersonScreen
 import com.example.movieboxxd.utils.K
 
 @Composable
@@ -53,7 +54,21 @@ fun NavigationGraph(
                         Route.FilmWithArgs.getRoute(movieId)
                     )
                 },
-                onActorClick = {  }
+                onActorClick = { personId ->
+                    navController.navigate(
+                        Route.PersonWithArgs.getRoute(personId)
+                    )
+                }
+            )
+        }
+        composable(
+            route = Route.PersonWithArgs.route,
+            arguments = listOf(navArgument(name = K.PERSON_ID) { type = NavType.IntType } )
+        ) {
+            PersonScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
             )
         }
 

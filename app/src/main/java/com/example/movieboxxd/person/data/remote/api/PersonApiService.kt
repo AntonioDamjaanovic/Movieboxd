@@ -10,10 +10,9 @@ import retrofit2.http.Query
 private const val PERSON_ID = "person_id"
 
 interface PersonApiService {
-    @GET("${K.MOVIE_PERSON_ENDPOINT}/${PERSON_ID}")
+    @GET("${K.MOVIE_PERSON_ENDPOINT}/{$PERSON_ID}")
     suspend fun fetchPersonDetail(
         @Path(PERSON_ID) personId: Int,
-        @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query("include_adult") includeAdult: Boolean = false
+        @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY
     ): PersonDto
 }

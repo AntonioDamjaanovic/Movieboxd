@@ -27,6 +27,7 @@ import com.example.movieboxxd.ui.theme.TopContentColor
 
 @Composable
 fun TopContent(
+    title: String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -37,12 +38,12 @@ fun TopContent(
         verticalArrangement = Arrangement.Bottom
     ) {
         Text(
-            text = "Movieboxd",
+            text = title,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
