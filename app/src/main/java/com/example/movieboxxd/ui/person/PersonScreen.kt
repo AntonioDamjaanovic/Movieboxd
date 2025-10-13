@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.movieboxxd.ui.components.Header
 import com.example.movieboxxd.ui.components.PersonCoverImage
 import com.example.movieboxxd.ui.home.components.TopContent
 import com.example.movieboxxd.ui.theme.BackgroundColor
@@ -70,11 +71,12 @@ fun PersonScreen(
                     .background(BackgroundColor)
             ) {
                 state.person?.let { person ->
-                    TopContent(
+                    Header(
                         title = person.name,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(0.12f)
+                            .weight(0.12f),
+                        onBackClick = onBackClick
                     )
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -105,21 +107,6 @@ fun PersonScreen(
                     }
                 }
             }
-
-
-        }
-
-        IconButton(
-            onClick = onBackClick,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(top = 48.dp, start = Padding.default)
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                contentDescription = "Back",
-                tint = Color.White
-            )
         }
     }
 }

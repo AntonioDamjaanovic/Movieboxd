@@ -11,6 +11,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
@@ -23,7 +24,9 @@ import com.example.movieboxxd.utils.K
 fun MovieCoverImage(
     modifier: Modifier = Modifier,
     movie: Movie,
-    onMovieClick: (id: Int) -> Unit
+    onMovieClick: (id: Int) -> Unit,
+    width: Dp = 120.dp,
+    height: Dp = 180.dp
 ) {
     val imgRequest = ImageRequest.Builder(LocalContext.current)
         .data("${K.BASE_IMAGE_URL}${movie.posterPath}")
@@ -32,7 +35,7 @@ fun MovieCoverImage(
 
     Box(
         modifier = modifier
-            .size(width = 140.dp, height = 200.dp)
+            .size(width = width, height = height)
             .padding(Padding.itemSpacing)
             .clickable { onMovieClick(movie.id) }
     ) {

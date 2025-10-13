@@ -19,8 +19,9 @@ interface MovieDetailApiService {
     ): MovieDetailDto
 
     @GET(K.MOVIE_ENDPOINT)
-    suspend fun fetchMovie(
+    suspend fun fetchMovies(
         @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query("include_adult") includeAdult: Boolean = false
+        @Query("include_adult") includeAdult: Boolean = false,
+        @Query("page") page: Int = 1
     ): MovieDto
 }

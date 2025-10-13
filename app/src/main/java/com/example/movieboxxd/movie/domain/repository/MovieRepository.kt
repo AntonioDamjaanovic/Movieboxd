@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 import com.example.movieboxxd.utils.Response
 
 interface MovieRepository {
-    fun fetchDiscoverMovie(): Flow<Response<List<Movie>>>
-    fun fetchTrendingMovie(): Flow<Response<List<Movie>>>
+    fun fetchDiscoverMovies(): Flow<Response<List<Movie>>>
+    fun fetchTrendingMovies(): Flow<Response<List<Movie>>>
 }

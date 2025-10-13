@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun fetchDiscoverMovie() = viewModelScope.launch {
-        repository.fetchDiscoverMovie().collectAndHandle(
+        repository.fetchDiscoverMovies().collectAndHandle(
             onError = { error ->
                 _homeState.update {
                     it.copy(isLoading = false, error = error?.message)
@@ -46,7 +46,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun fetchTrendingMovie() = viewModelScope.launch {
-        repository.fetchTrendingMovie().collectAndHandle(
+        repository.fetchTrendingMovies().collectAndHandle(
             onError = { error ->
                 _homeState.update {
                     it.copy(isLoading = false, error = error?.message)

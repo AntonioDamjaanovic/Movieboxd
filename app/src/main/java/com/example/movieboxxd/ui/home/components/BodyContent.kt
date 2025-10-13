@@ -31,7 +31,8 @@ fun BodyContent(
     modifier: Modifier = Modifier,
     discoverMovies: List<Movie>,
     trendingMovies: List<Movie>,
-    onMovieClick: (id: Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    onMoreMoviesClick: (String) -> Unit
 ) {
     Column(modifier = modifier.background(color = BackgroundColor)) {
         Row(
@@ -48,11 +49,11 @@ fun BodyContent(
                 color = Color.White
             )
             IconButton(
-                onClick = { /*TODO*/ }
+                onClick = { onMoreMoviesClick("trending") }
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
-                    contentDescription = "More discover movies",
+                    contentDescription = "More trending movies",
                     modifier = Modifier.size(18.dp),
                     tint = Color.White
                 )
@@ -61,7 +62,7 @@ fun BodyContent(
         LazyRow(
             modifier = Modifier.padding(horizontal = Padding.default)
         ) {
-            items(discoverMovies) {
+            items(trendingMovies) {
                 MovieCoverImage(
                     movie = it,
                     onMovieClick = onMovieClick
@@ -76,17 +77,17 @@ fun BodyContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Trending Movies",
+                text = "Discover movies",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
             IconButton(
-                onClick = { /*TODO*/ }
+                onClick = { onMoreMoviesClick("discover") }
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
-                    contentDescription = "More trending movies",
+                    contentDescription = "More discover movies",
                     modifier = Modifier.size(18.dp),
                     tint = Color.White
                 )
@@ -95,7 +96,7 @@ fun BodyContent(
         LazyRow(
             modifier = Modifier.padding(horizontal = Padding.default)
         ) {
-            items(trendingMovies) {
+            items(discoverMovies) {
                 MovieCoverImage(
                     movie = it,
                     onMovieClick = onMovieClick

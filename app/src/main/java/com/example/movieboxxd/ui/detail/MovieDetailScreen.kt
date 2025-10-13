@@ -79,7 +79,7 @@ fun MovieDetailScreen(
                         fetchMovies = detailViewModel::fetchMovies,
                         isMovieLoading = state.isMovieLoading,
                         onMovieClick = onMovieClick,
-                        onActorClick = onActorClick,
+                        onPersonClick = onActorClick,
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .height(bodyItemHeight)

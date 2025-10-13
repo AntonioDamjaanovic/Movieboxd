@@ -14,21 +14,31 @@ class MovieRepositoryImpl(
     private val movieApiService: MovieApiService,
     private val apiMapper: ApiMapper<List<Movie>, MovieDto>
 ): MovieRepository {
-    override fun fetchDiscoverMovie(): Flow<Response<List<Movie>>> = flow {
+    override fun fetchDiscoverMovies(): Flow<Response<List<Movie>>> = flow {
         emit(Response.Loading())
-        val movieDto = movieApiService.fetchDiscoverMovie()
 
-        apiMapper.mapToDomain(movieDto).apply {
-            emit(Response.Success(this))
+        val pages = intArrayOf(1, 2, 3, 4, 5)
+        val combinedMovies = mutableListOf<Movie>()
+        for (page in pages) {
+            val movieDto = movieApiService.fetchDiscoverMovies(page = page)
+            val moviePage = apiMapper.mapToDomain(movieDto)
+            combinedMovies.addAll(moviePage)
         }
+
+        emit(Response.Success(combinedMovies.toList()))
     }.catch { e -> emit(Response.Error(e)) }
 
-    override fun fetchTrendingMovie(): Flow<Response<List<Movie>>> = flow {
+    override fun fetchTrendingMovies(): Flow<Response<List<Movie>>> = flow {
         emit(Response.Loading())
-        val movieDto = movieApiService.fetchTrendingMovie()
 
-        apiMapper.mapToDomain(movieDto).apply {
-            emit(Response.Success(this))
+        val pages = intArrayOf(1, 2, 3, 4, 5)
+        val combinedMovies = mutableListOf<Movie>()
+        for (page in pages) {
+            val movieDto = movieApiService.fetchTrendingMovies(page = page)
+            val moviePage = apiMapper.mapToDomain(movieDto)
+            combinedMovies.addAll(moviePage)
         }
+
+        emit(Response.Success(combinedMovies.toList()))
     }.catch { e -> emit(Response.Error(e)) }
 }

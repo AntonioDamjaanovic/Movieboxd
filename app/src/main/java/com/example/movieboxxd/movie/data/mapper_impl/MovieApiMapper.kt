@@ -3,7 +3,8 @@ package com.example.movieboxxd.movie.data.mapper_impl
 import com.example.movieboxxd.common.data.ApiMapper
 import com.example.movieboxxd.movie.data.remote.models.MovieDto
 import com.example.movieboxxd.movie.domain.models.Movie
-import com.example.movieboxxd.utils.GenreConstants
+import com.example.movieboxxd.utils.formatEmptyValue
+import com.example.movieboxxd.utils.formatGenre
 
 class MovieApiMapper: ApiMapper<List<Movie>, MovieDto> {
     override fun mapToDomain(apiDto: MovieDto): List<Movie> {
@@ -24,14 +25,5 @@ class MovieApiMapper: ApiMapper<List<Movie>, MovieDto> {
                 video = result?.video ?: false
             )
         } ?: emptyList()
-    }
-
-    private fun formatEmptyValue(value: String?, default: String = ""): String {
-        if (value.isNullOrEmpty()) return "Unknown $default"
-        return value
-    }
-
-    private fun formatGenre(genreIds: List<Int?>?): List<String> {
-        return genreIds?.map { GenreConstants.getGenreNameById(it ?: 0) } ?: emptyList()
     }
 }

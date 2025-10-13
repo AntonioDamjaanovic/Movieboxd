@@ -9,6 +9,10 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.util.Locale
 
+fun formatGenre(genreIds: List<Int?>?): List<String> {
+    return genreIds?.map { GenreConstants.getGenreNameById(it ?: 0) } ?: emptyList()
+}
+
 fun formatTimeStamp(pattern: String = "dd.MM.yy", time: String): String {
     return try {
         val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)

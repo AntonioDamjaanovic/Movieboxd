@@ -40,7 +40,6 @@ object MovieModule {
     @Singleton
     fun provideMovieMapper(): ApiMapper<List<Movie>, MovieDto> = MovieApiMapper()
 
-    @OptIn(ExperimentalSerializationApi::class)
     @Provides
     @Singleton
     fun provideMovieApiService(): MovieApiService {

@@ -8,14 +8,16 @@ import retrofit2.http.Query
 
 interface MovieApiService {
     @GET(K.MOVIE_ENDPOINT)
-    suspend fun fetchDiscoverMovie(
+    suspend fun fetchDiscoverMovies(
         @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query("include_adult") includeAdult: Boolean = false
+        @Query("include_adult") includeAdult: Boolean = false,
+        @Query("page") page: Int = 1
     ): MovieDto
 
     @GET(K.TRENDING_MOVIE_ENDPOINT)
-    suspend fun fetchTrendingMovie(
+    suspend fun fetchTrendingMovies(
         @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
-        @Query("include_adult") includeAdult: Boolean = false
+        @Query("include_adult") includeAdult: Boolean = false,
+        @Query("page") page: Int = 1
     ): MovieDto
 }

@@ -30,7 +30,7 @@ class MovieDetailRepositoryImpl(
 
     override fun fetchMovies(): Flow<Response<List<Movie>>> = flow {
         emit(Response.Loading())
-        val movieDto = movieDetailApiService.fetchMovie()
+        val movieDto = movieDetailApiService.fetchMovies()
         apiMovieMapper.mapToDomain(movieDto).apply {
             emit(Response.Success(this))
         }

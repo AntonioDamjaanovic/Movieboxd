@@ -54,7 +54,7 @@ fun DetailBodyContent(
     isMovieLoading: Boolean,
     fetchMovies: () -> Unit,
     onMovieClick: (Int) -> Unit,
-    onActorClick: (Int) -> Unit,
+    onPersonClick: (Int) -> Unit,
 ) {
     Column(modifier.background(color = BackgroundColor)) {
         Column(
@@ -140,7 +140,7 @@ fun DetailBodyContent(
                         cast = it,
                         modifier = Modifier
                             .weight(1f)
-                            .clickable { onActorClick(it.id) }
+                            .clickable { onPersonClick(it.id) }
                     )
                     Spacer(modifier = Modifier.width(Padding.default))
                 }
@@ -175,7 +175,7 @@ fun DetailBodyContent(
                         crew = it,
                         modifier = Modifier
                             .weight(1f)
-                            .clickable { onActorClick(it.id) }
+                            .clickable { onPersonClick(it.id) }
                     )
                     Spacer(modifier = Modifier.width(Padding.default))
                 }

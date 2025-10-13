@@ -25,7 +25,8 @@ import com.example.movieboxxd.ui.theme.Padding
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = hiltViewModel(),
-    onMovieClick: (id: Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    onMoreMoviesClick: (String) -> Unit
 ) {
     val state by homeViewModel.homeState.collectAsStateWithLifecycle()
 
@@ -58,7 +59,8 @@ fun HomeScreen(
                         .weight(0.85f),
                     discoverMovies = state.discoverMovies,
                     trendingMovies = state.trendingMovies,
-                    onMovieClick = onMovieClick
+                    onMovieClick = onMovieClick,
+                    onMoreMoviesClick = onMoreMoviesClick
                 )
             }
         }

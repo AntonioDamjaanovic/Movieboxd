@@ -7,7 +7,6 @@ import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.movieboxxd.ui.detail.MovieDetailScreen
 import com.example.movieboxxd.ui.home.HomeScreen
+import com.example.movieboxxd.ui.home.MoreMoviesScreen
 import com.example.movieboxxd.ui.person.PersonScreen
 import com.example.movieboxxd.utils.K
 
@@ -38,9 +38,31 @@ fun NavigationGraph(
                     navController.navigate(
                         Route.FilmWithArgs.getRoute(movieId)
                     )
+                },
+                onMoreMoviesClick = { title ->
+                    navController.navigate(Route.MoreMovies.getRoute(title))
                 }
             )
         }
+        composable(
+            route = Route.MoreMovies.route,
+            arguments = listOf(navArgument("type") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val type = backStackEntry.arguments?.getString("type") ?: "empty"
+
+            MoreMoviesScreen(
+                type = type,
+                onMovieClick = { movieId ->
+                    navController.navigate(
+                        Route.FilmWithArgs.getRoute(movieId)
+                    )
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
         composable(
             route = Route.FilmWithArgs.route,
             arguments = listOf(navArgument(name = K.MOVIE_ID) { type = NavType.IntType })
