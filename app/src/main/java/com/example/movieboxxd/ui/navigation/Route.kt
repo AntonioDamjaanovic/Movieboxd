@@ -6,8 +6,8 @@ sealed class Route(val route: String) {
         fun getRoute(type: String) = "moreMovies/$type"
     }
 
-    object Film : Route("film")
-    object FilmWithArgs : Route("film/{id}") {
+    object Movie : Route("film")
+    object MovieWithArgs : Route("film/{id}") {
         fun getRoute(id: Int) = "film/$id"
     }
 

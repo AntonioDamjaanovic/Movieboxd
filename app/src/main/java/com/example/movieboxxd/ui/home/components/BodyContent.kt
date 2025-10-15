@@ -34,7 +34,11 @@ fun BodyContent(
     onMovieClick: (Int) -> Unit,
     onMoreMoviesClick: (String) -> Unit
 ) {
-    Column(modifier = modifier.background(color = BackgroundColor)) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(color = BackgroundColor)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

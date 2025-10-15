@@ -59,13 +59,13 @@ fun CrewItem(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = crew.firstName,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
         Text(
             text = crew.lastName,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )

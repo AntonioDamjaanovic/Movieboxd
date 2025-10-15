@@ -26,7 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.movieboxxd.ui.navigation.BottomNavigationItem
 import com.example.movieboxxd.ui.navigation.NavigationGraph
 import com.example.movieboxxd.ui.navigation.Route
-import com.example.movieboxxd.ui.theme.BottomNavigationColor
+import com.example.movieboxxd.ui.theme.DefaultColor
 import com.example.movieboxxd.ui.theme.MovieboxxdTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
         Scaffold(
             bottomBar = {
                 NavigationBar(
-                    containerColor = BottomNavigationColor
+                    containerColor = DefaultColor
                 ) {
                     bottomNavigationItems.forEach { item ->
                         NavigationBarItem(

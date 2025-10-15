@@ -38,9 +38,9 @@ class HomeViewModel @Inject constructor(
                     it.copy(isLoading = true, error = null)
                 }
             }
-        ) { movie ->
+        ) { movies ->
             _homeState.update {
-                it.copy(isLoading = false, error = null, discoverMovies = movie)
+                it.copy(isLoading = false, error = null, discoverMovies = movies)
             }
         }
     }
@@ -57,9 +57,9 @@ class HomeViewModel @Inject constructor(
                     it.copy(isLoading = true, error = null)
                 }
             }
-        ) { movie ->
+        ) { movies ->
             _homeState.update {
-                it.copy(isLoading = false, error = null, trendingMovies = movie)
+                it.copy(isLoading = false, error = null, trendingMovies = movies)
             }
         }
     }

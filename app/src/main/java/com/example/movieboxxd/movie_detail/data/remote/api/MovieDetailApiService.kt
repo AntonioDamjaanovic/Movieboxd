@@ -18,7 +18,7 @@ interface MovieDetailApiService {
         @Query("append_to_response") appendToResponse: String = "credits,reviews"
     ): MovieDetailDto
 
-    @GET(K.MOVIE_ENDPOINT)
+    @GET(K.DISCOVER_MOVIE_ENDPOINT)
     suspend fun fetchMovies(
         @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
         @Query("include_adult") includeAdult: Boolean = false,

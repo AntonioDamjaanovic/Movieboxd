@@ -12,6 +12,6 @@ val Pink40 = Color(0xFF7D5260)
 
 // APP COLORS
 val BackgroundColor = Color(0xFF1a2124)
-val BottomNavigationColor = Color(0xFF475b68)
+val DefaultColor = Color(0xFF475b68)
 val TopContentColor = Color(0xFF050504)
 val SelectedIconColor = Color(0xFF41b9ea)

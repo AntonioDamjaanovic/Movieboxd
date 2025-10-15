@@ -41,4 +41,13 @@ class MovieRepositoryImpl(
 
         emit(Response.Success(combinedMovies.toList()))
     }.catch { e -> emit(Response.Error(e)) }
+
+    override fun searchMovie(query: String): Flow<Response<List<Movie>>> = flow {
+        emit(Response.Loading())
+
+        val movieDto = movieApiService.searchMovie(query = query)
+        val movie = apiMapper.mapToDomain(movieDto)
+
+        emit(Response.Success(movie))
+    }.catch { e -> emit(Response.Error(e)) }
 }

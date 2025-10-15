@@ -64,13 +64,13 @@ fun ActorItem(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = cast.firstName,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
         Text(
             text = cast.lastName,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )

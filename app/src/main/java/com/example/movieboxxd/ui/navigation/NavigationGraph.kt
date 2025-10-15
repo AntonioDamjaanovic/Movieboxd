@@ -16,6 +16,7 @@ import com.example.movieboxxd.ui.detail.MovieDetailScreen
 import com.example.movieboxxd.ui.home.HomeScreen
 import com.example.movieboxxd.ui.home.MoreMoviesScreen
 import com.example.movieboxxd.ui.person.PersonScreen
+import com.example.movieboxxd.ui.search.SearchScreen
 import com.example.movieboxxd.utils.K
 
 @Composable
@@ -36,7 +37,7 @@ fun NavigationGraph(
             HomeScreen(
                 onMovieClick = { movieId ->
                     navController.navigate(
-                        Route.FilmWithArgs.getRoute(movieId)
+                        Route.MovieWithArgs.getRoute(movieId)
                     )
                 },
                 onMoreMoviesClick = { title ->
@@ -54,7 +55,7 @@ fun NavigationGraph(
                 type = type,
                 onMovieClick = { movieId ->
                     navController.navigate(
-                        Route.FilmWithArgs.getRoute(movieId)
+                        Route.MovieWithArgs.getRoute(movieId)
                     )
                 },
                 onBackClick = {
@@ -64,7 +65,7 @@ fun NavigationGraph(
         }
 
         composable(
-            route = Route.FilmWithArgs.route,
+            route = Route.MovieWithArgs.route,
             arguments = listOf(navArgument(name = K.MOVIE_ID) { type = NavType.IntType })
         ) {
             MovieDetailScreen(
@@ -73,7 +74,7 @@ fun NavigationGraph(
                 },
                 onMovieClick = { movieId ->
                     navController.navigate(
-                        Route.FilmWithArgs.getRoute(movieId)
+                        Route.MovieWithArgs.getRoute(movieId)
                     )
                 },
                 onActorClick = { personId ->
@@ -94,7 +95,15 @@ fun NavigationGraph(
             )
         }
 
-        composable(Route.Search.route) { /* SearchScreen() */ }
+        composable(Route.Search.route) {
+            SearchScreen(
+                onMovieClick = { movieId ->
+                    navController.navigate(
+                        Route.MovieWithArgs.getRoute(movieId)
+                    )
+                }
+            )
+        }
         composable(Route.Profile.route) { /* ProfileScreen() */ }
     }
 }

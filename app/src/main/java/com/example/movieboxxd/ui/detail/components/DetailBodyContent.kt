@@ -14,17 +14,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -35,14 +27,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.movieboxxd.movie.domain.models.Movie
 import com.example.movieboxxd.movie_detail.domain.models.MovieDetail
 import com.example.movieboxxd.movie_detail.domain.models.Review
 import com.example.movieboxxd.ui.components.MovieCoverImage
-import com.example.movieboxxd.ui.home.components.MovieCard
 import com.example.movieboxxd.ui.theme.BackgroundColor
 import com.example.movieboxxd.ui.theme.Padding
 
@@ -115,7 +105,7 @@ fun DetailBodyContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = Padding.itemSpacing),
+                    .padding(bottom = Padding.itemSpacing),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -125,13 +115,6 @@ fun DetailBodyContent(
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
-                        contentDescription = "Cast",
-                        tint = Color.White
-                    )
-                }
             }
 
             LazyRow {
@@ -150,7 +133,7 @@ fun DetailBodyContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = Padding.itemSpacing),
+                    .padding(bottom = Padding.itemSpacing),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -160,13 +143,6 @@ fun DetailBodyContent(
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
-                        contentDescription = "Crew",
-                        tint = Color.White
-                    )
-                }
             }
 
             LazyRow {
@@ -243,33 +219,6 @@ fun MoreLikeThis(
                 MovieCoverImage(movie = it, onMovieClick = onMovieClick)
             }
         }
-    }
-}
-
-private enum class ActionIcon(val icon: ImageVector, val contentDescription: String) {
-    Bookmark(icon = Icons.Default.Bookmark, contentDescription = "Bookmark"),
-    Share(icon = Icons.Default.Share, contentDescription = "Share"),
-    Download(icon = Icons.Default.Download, contentDescription = "Download")
-}
-
-@Composable
-private fun ActionIconButton(
-    modifier: Modifier = Modifier,
-    icon: ImageVector,
-    contentDescription: String? = null,
-    backgroundColor: Color = Color.Black.copy(.8f)
-) {
-    MovieCard(
-        shapes = CircleShape,
-        modifier = modifier
-            .padding(4.dp),
-        backgroundColor = backgroundColor
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = contentDescription,
-            modifier = Modifier.padding(4.dp)
-        )
     }
 }
 
