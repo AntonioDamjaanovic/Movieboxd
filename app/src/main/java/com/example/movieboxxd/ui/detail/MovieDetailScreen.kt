@@ -1,6 +1,5 @@
 package com.example.movieboxxd.ui.detail
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -25,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.movieboxxd.ui.components.ErrorView
 import com.example.movieboxxd.ui.components.LoadingView
 import com.example.movieboxxd.ui.detail.components.DetailBodyContent
 import com.example.movieboxxd.ui.detail.components.DetailTopContent
@@ -41,49 +41,38 @@ fun MovieDetailScreen(
     val state by detailViewModel.detailState.collectAsStateWithLifecycle()
 
     Box(modifier = modifier.fillMaxWidth()) {
-        AnimatedVisibility(
-            visible = state.error != null,
-            modifier = Modifier.align(Alignment.TopCenter)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize().padding(Padding.default)
-            ) {
-                Text(
-                    text = state.error ?: "Unknown error",
-                    color = MaterialTheme.colorScheme.error,
-                    maxLines = 2,
-                    textAlign = TextAlign.Center
-                )
+        when {
+            state.isLoading -> {
+                LoadingView()
             }
-        }
-        AnimatedVisibility(
-            visible = !state.isLoading && state.error == null,
-        ) {
-            BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-                val boxHeight = maxHeight
-                val topItemHeight = boxHeight * .3f
-                val bodyItemHeight = boxHeight * .7f
+            state.error != null -> {
+                ErrorView(errorMessage = state.error ?: "Unknown error")
+            }
+            else -> {
+                BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                    val boxHeight = maxHeight
+                    val topItemHeight = boxHeight * .3f
+                    val bodyItemHeight = boxHeight * .7f
 
-                state.movieDetail?.let { movieDetail ->
-                    DetailTopContent(
-                        movieDetail = movieDetail,
-                        modifier = Modifier
-                            .height(topItemHeight)
-                            .align(Alignment.TopCenter)
-                    )
-                    DetailBodyContent(
-                        movieDetail = movieDetail,
-                        movies = state.movies,
-                        fetchMovies = detailViewModel::fetchMovies,
-                        isMovieLoading = state.isMovieLoading,
-                        onMovieClick = onMovieClick,
-                        onPersonClick = onActorClick,
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .height(bodyItemHeight)
-                    )
+                    state.movieDetail?.let { movieDetail ->
+                        DetailTopContent(
+                            movieDetail = movieDetail,
+                            modifier = Modifier
+                                .height(topItemHeight)
+                                .align(Alignment.TopCenter)
+                        )
+                        DetailBodyContent(
+                            movieDetail = movieDetail,
+                            movies = state.movies,
+                            fetchMovies = detailViewModel::fetchMovies,
+                            isMovieLoading = state.isMovieLoading,
+                            onMovieClick = onMovieClick,
+                            onPersonClick = onActorClick,
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .height(bodyItemHeight)
+                        )
+                    }
                 }
             }
         }
@@ -112,5 +101,4 @@ fun MovieDetailScreen(
             )
         }
     }
-    LoadingView(isLoading = state.isLoading)
 }

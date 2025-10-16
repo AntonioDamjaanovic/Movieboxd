@@ -1,9 +1,8 @@
 package com.example.movieboxxd.ui.navigation
 
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,12 +26,14 @@ fun NavigationGraph(
     NavHost(
         navController = navController,
         startDestination = Route.Home.route,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        enterTransition = { fadeIn(animationSpec = tween(100))},
+        exitTransition = { fadeOut(animationSpec = tween(100)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(100)) },
+        popExitTransition = { fadeOut(animationSpec = tween(100)) }
     ) {
         composable(
-            route = Route.Home.route,
-            enterTransition = { fadeIn() + scaleIn() },
-            exitTransition = { fadeOut() + shrinkOut() }
+            route = Route.Home.route
         ) {
             HomeScreen(
                 onMovieClick = { movieId ->

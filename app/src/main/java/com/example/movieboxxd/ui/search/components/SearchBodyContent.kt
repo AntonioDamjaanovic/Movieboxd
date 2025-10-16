@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.movieboxxd.movie.domain.models.Movie
+import com.example.movieboxxd.ui.components.LoadingView
 import com.example.movieboxxd.ui.theme.BackgroundColor
 import com.example.movieboxxd.ui.theme.DefaultColor
 
@@ -32,11 +33,7 @@ fun SearchBodyContent(
             .background(BackgroundColor)
     ) {
         if (isLoading) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
+            LoadingView()
         } else {
             LazyColumn(
                 modifier = Modifier

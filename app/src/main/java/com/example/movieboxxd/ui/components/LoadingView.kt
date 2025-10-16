@@ -1,35 +1,23 @@
 package com.example.movieboxxd.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.movieboxxd.ui.theme.BackgroundColor
 
 @Composable
-fun LoadingView(
-    isLoading: Boolean
-) {
-    AnimatedVisibility(
-        visible = isLoading,
-        enter = fadeIn() + expandVertically()
+fun LoadingView() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BackgroundColor)
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.primary.copy(alpha = .3f)
-            ) {
-
-            }
-        }
+        CircularProgressIndicator(
+            modifier = Modifier.align(Alignment.Center)
+        )
     }
 }

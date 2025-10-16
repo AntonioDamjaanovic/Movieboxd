@@ -1,6 +1,5 @@
 package com.example.movieboxxd.ui.home
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieboxxd.movie.domain.models.Movie
+import com.example.movieboxxd.ui.components.ErrorView
 import com.example.movieboxxd.ui.components.Header
 import com.example.movieboxxd.ui.components.LoadingView
 import com.example.movieboxxd.ui.components.MovieCoverImage
@@ -44,55 +44,41 @@ fun MoreMoviesScreen(
     }
 
     Box(modifier = modifier.fillMaxWidth()) {
-        AnimatedVisibility(
-            visible = state.error != null,
-            modifier = Modifier.align(Alignment.TopCenter)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(Padding.default)
-            ) {
-                Text(
-                    text = state.error ?: "Unknown error",
-                    color = MaterialTheme.colorScheme.error,
-                    maxLines = 2,
-                    textAlign = TextAlign.Center
-                )
+        when {
+            state.isLoading -> {
+                LoadingView()
             }
-        }
-        AnimatedVisibility(
-            visible = !state.isLoading && state.error == null,
-        ) {
-            Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(BackgroundColor)
-            ) {
-                Header(
-                    title = if (type == "trending") "Popular this week" else "Discover movies",
-                    onBackClick = onBackClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(0.12f)
-                )
+            state.error != null -> {
+                ErrorView(errorMessage = state.error ?: "Unknown error")
+            }
+            else -> {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(BackgroundColor)
-                        .weight(0.85f)
                 ) {
-                    MovieGrid(
-                        movies = movies,
-                        onMovieClick = onMovieClick,
-                        modifier = Modifier.weight(1f)
+                    Header(
+                        title = if (type == "trending") "Popular this week" else "Discover movies",
+                        onBackClick = onBackClick,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.12f)
                     )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(BackgroundColor)
+                            .weight(0.85f)
+                    ) {
+                        MovieGrid(
+                            movies = movies,
+                            onMovieClick = onMovieClick,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
                 }
             }
         }
-        LoadingView(isLoading = state.isLoading)
     }
 }
 
