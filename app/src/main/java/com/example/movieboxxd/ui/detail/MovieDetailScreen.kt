@@ -1,9 +1,7 @@
 package com.example.movieboxxd.ui.detail
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,14 +11,11 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -63,8 +58,8 @@ fun MovieDetailScreen(
                         )
                         DetailBodyContent(
                             movieDetail = movieDetail,
-                            movies = state.movies,
-                            fetchMovies = detailViewModel::fetchMovies,
+                            similarMovies = state.similarMovies,
+                            fetchMovies = detailViewModel::fetchSimilarMovies,
                             isMovieLoading = state.isMovieLoading,
                             onMovieClick = onMovieClick,
                             onPersonClick = onActorClick,

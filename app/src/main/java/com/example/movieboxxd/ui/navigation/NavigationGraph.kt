@@ -41,8 +41,8 @@ fun NavigationGraph(
                         Route.MovieWithArgs.getRoute(movieId)
                     )
                 },
-                onMoreMoviesClick = { title ->
-                    navController.navigate(Route.MoreMovies.getRoute(title))
+                onMoreMoviesClick = { type ->
+                    navController.navigate(Route.MoreMovies.getRoute(type))
                 }
             )
         }

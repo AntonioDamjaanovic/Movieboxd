@@ -25,5 +25,4 @@ class PersonRepositoryImpl(
         e.printStackTrace()
         emit(Response.Error(e))
     }
-
 }

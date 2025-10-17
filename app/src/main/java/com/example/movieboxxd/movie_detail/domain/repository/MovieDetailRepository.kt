@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieDetailRepository {
     fun fetchMovieDetail(movieId: Int): Flow<Response<MovieDetail>>
-    fun fetchMovies(): Flow<Response<List<Movie>>>
+    fun fetchSimilarMovies(movieId: Int): Flow<Response<List<Movie>>>
 }

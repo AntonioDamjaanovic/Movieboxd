@@ -40,11 +40,11 @@ import com.example.movieboxxd.ui.theme.Padding
 fun DetailBodyContent(
     modifier: Modifier = Modifier,
     movieDetail: MovieDetail,
-    movies: List<Movie>,
+    similarMovies: List<Movie>,
     isMovieLoading: Boolean,
     fetchMovies: () -> Unit,
     onMovieClick: (Int) -> Unit,
-    onPersonClick: (Int) -> Unit,
+    onPersonClick: (Int) -> Unit
 ) {
     Column(modifier.background(color = BackgroundColor)) {
         Column(
@@ -181,7 +181,7 @@ fun DetailBodyContent(
 
             MoreLikeThis(
                 fetchMovies = fetchMovies,
-                movies = movies,
+                similarMovies = similarMovies,
                 isMovieLoading = isMovieLoading,
                 onMovieClick = onMovieClick
             )
@@ -192,7 +192,7 @@ fun DetailBodyContent(
 @Composable
 fun MoreLikeThis(
     modifier: Modifier = Modifier,
-    movies: List<Movie>,
+    similarMovies: List<Movie>,
     fetchMovies: () -> Unit,
     isMovieLoading: Boolean,
     onMovieClick: (Int) -> Unit
@@ -215,7 +215,7 @@ fun MoreLikeThis(
                     CircularProgressIndicator()
                 }
             }
-            items(movies) {
+            items(similarMovies) {
                 MovieCoverImage(movie = it, onMovieClick = onMovieClick)
             }
         }
