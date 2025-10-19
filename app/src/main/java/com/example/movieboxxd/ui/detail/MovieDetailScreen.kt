@@ -58,8 +58,8 @@ fun MovieDetailScreen(
                         )
                         DetailBodyContent(
                             movieDetail = movieDetail,
-                            similarMovies = state.similarMovies,
-                            fetchMovies = detailViewModel::fetchSimilarMovies,
+                            similarMovies = state.recommendedMovies,
+                            fetchMovies = detailViewModel::fetchRecommendedMovies,
                             isMovieLoading = state.isMovieLoading,
                             onMovieClick = onMovieClick,
                             onPersonClick = onActorClick,

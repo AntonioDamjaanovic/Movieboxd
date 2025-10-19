@@ -18,7 +18,7 @@ interface MovieDetailApiService {
         @Query("append_to_response") appendToResponse: String = "credits,reviews"
     ): MovieDetailDto
 
-    @GET("${K.MOVIE_DETAIL_ENDPOINT}/{$MOVIE_ID}/${K.SIMILAR_MOVIES_ENDPOINT}")
+    @GET("${K.MOVIE_DETAIL_ENDPOINT}/{$MOVIE_ID}/${K.RECOMMENDED_MOVIES_ENDPOINT}")
     suspend fun fetchSimilarMovies(
         @Path(MOVIE_ID) movieId: Int,
         @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,

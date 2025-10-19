@@ -6,6 +6,7 @@ object K {
     const val DISCOVER_MOVIE_ENDPOINT = "discover/movie"
     const val MOVIE_DETAIL_ENDPOINT = "movie"
     const val SIMILAR_MOVIES_ENDPOINT = "similar"
+    const val RECOMMENDED_MOVIES_ENDPOINT = "recommendations"
     const val MOVIE_PERSON_ENDPOINT = "person"
     const val TRENDING_MOVIE_ENDPOINT = "trending/movie/week"
     const val MOVIE_ID = "id"

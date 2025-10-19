@@ -28,7 +28,7 @@ class MovieDetailRepositoryImpl(
         emit(Response.Error(e))
     }
 
-    override fun fetchSimilarMovies(movieId: Int): Flow<Response<List<Movie>>> = flow {
+    override fun fetchRecommendedMovies(movieId: Int): Flow<Response<List<Movie>>> = flow {
         emit(Response.Loading())
         val movieDto = movieDetailApiService.fetchSimilarMovies(movieId)
         apiMovieMapper.mapToDomain(movieDto).apply {

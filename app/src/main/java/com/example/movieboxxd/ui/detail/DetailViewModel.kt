@@ -54,13 +54,13 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun fetchSimilarMovies() = viewModelScope.launch {
+    fun fetchRecommendedMovies() = viewModelScope.launch {
         if (id == -1) {
             _detailState.update {
                 it.copy(isLoading = false, error = "Similar movies not found")
             }
         } else {
-            repository.fetchSimilarMovies(id).collectAndHandle(
+            repository.fetchRecommendedMovies(id).collectAndHandle(
                 onError = { error ->
                     _detailState.update {
                         it.copy(isMovieLoading = false, error = error?.message)
@@ -73,7 +73,7 @@ class DetailViewModel @Inject constructor(
                 }
             ) { movies ->
                 _detailState.update {
-                    it.copy(isMovieLoading = false, error = null, similarMovies = movies)
+                    it.copy(isMovieLoading = false, error = null, recommendedMovies = movies)
                 }
             }
         }
@@ -82,7 +82,7 @@ class DetailViewModel @Inject constructor(
 
 data class DetailState(
     val movieDetail: MovieDetail? = null,
-    val similarMovies: List<Movie> = emptyList(),
+    val recommendedMovies: List<Movie> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
     val isMovieLoading: Boolean = false
