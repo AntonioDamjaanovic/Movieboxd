@@ -9,7 +9,7 @@ import com.example.movieboxxd.movie_detail.data.remote.models.MovieDetailDto
 import com.example.movieboxxd.movie_detail.data.repository_impl.MovieDetailRepositoryImpl
 import com.example.movieboxxd.movie_detail.domain.models.MovieDetail
 import com.example.movieboxxd.movie_detail.domain.repository.MovieDetailRepository
-import com.example.movieboxxd.utils.K
+import com.example.movieboxxd.utils.DBConstants
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -23,6 +23,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object MovieDetailModule {
+
     private val json = Json {
         coerceInputValues = true
         ignoreUnknownKeys = true
@@ -49,7 +50,7 @@ object MovieDetailModule {
     fun provideMovieDetailApiService(): MovieDetailApiService {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl(K.BASE_URL)
+            .baseUrl(DBConstants.BASE_URL)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(MovieDetailApiService::class.java)

@@ -7,7 +7,7 @@ import com.example.movieboxxd.person.data.remote.models.PersonDto
 import com.example.movieboxxd.person.data.repository_impl.PersonRepositoryImpl
 import com.example.movieboxxd.person.domain.models.Person
 import com.example.movieboxxd.person.domain.repository.PersonRepository
-import com.example.movieboxxd.utils.K
+import com.example.movieboxxd.utils.DBConstants
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -21,6 +21,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object PersonModule {
+
     private val json = Json {
         coerceInputValues = true
         ignoreUnknownKeys = true
@@ -45,7 +46,7 @@ object PersonModule {
     fun providePersonApiService(): PersonApiService {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl(K.BASE_URL)
+            .baseUrl(DBConstants.BASE_URL)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(PersonApiService::class.java)

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.movieboxxd.movie.domain.models.Movie
 import com.example.movieboxxd.movie_detail.domain.models.MovieDetail
 import com.example.movieboxxd.movie_detail.domain.repository.MovieDetailRepository
-import com.example.movieboxxd.utils.K
+import com.example.movieboxxd.utils.DBConstants
 import com.example.movieboxxd.utils.collectAndHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +23,7 @@ class DetailViewModel @Inject constructor(
     private val _detailState = MutableStateFlow(DetailState())
     val detailState = _detailState.asStateFlow()
 
-    val id: Int = savedStateHandle.get<Int>(K.MOVIE_ID) ?: -1
+    val id: Int = savedStateHandle.get<Int>(DBConstants.MOVIE_ID) ?: -1
 
     init {
         fetchMovieDetailById()

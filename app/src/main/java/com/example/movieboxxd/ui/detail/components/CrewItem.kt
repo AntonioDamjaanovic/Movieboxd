@@ -22,7 +22,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.movieboxxd.R
 import com.example.movieboxxd.movie_detail.domain.models.Crew
-import com.example.movieboxxd.utils.K
+import com.example.movieboxxd.utils.DBConstants
 
 @Composable
 fun CrewItem(
@@ -30,7 +30,7 @@ fun CrewItem(
     crew: Crew
 ) {
     val imageRequest = ImageRequest.Builder(LocalContext.current)
-        .data("${K.BASE_IMAGE_URL}${crew.profilePath}")
+        .data("${DBConstants.BASE_IMAGE_URL}${crew.profilePath}")
         .crossfade(true)
         .build()
 

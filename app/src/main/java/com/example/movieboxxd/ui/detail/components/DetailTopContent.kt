@@ -12,7 +12,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.movieboxxd.R
 import com.example.movieboxxd.movie_detail.domain.models.MovieDetail
-import com.example.movieboxxd.utils.K
+import com.example.movieboxxd.utils.DBConstants
 
 @Composable
 fun DetailTopContent(
@@ -20,7 +20,7 @@ fun DetailTopContent(
     movieDetail: MovieDetail
 ) {
     val imgRequest = ImageRequest.Builder(LocalContext.current)
-        .data("${K.BASE_IMAGE_URL}${movieDetail.backdropPath}")
+        .data("${DBConstants.BASE_IMAGE_URL}${movieDetail.backdropPath}")
         .crossfade(true)
         .build()
 

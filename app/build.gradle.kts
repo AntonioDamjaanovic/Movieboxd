@@ -82,4 +82,6 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
     kapt("com.google.dagger:hilt-android-compiler:2.57.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
 }

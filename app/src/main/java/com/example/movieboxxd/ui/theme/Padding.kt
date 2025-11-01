@@ -7,4 +7,5 @@ object Padding {
     val itemSpacing = 6.dp
     val verticalSpacing = 20.dp
     val topPadding = 30.dp
+    val innerButtonPadding = 10.dp
 }

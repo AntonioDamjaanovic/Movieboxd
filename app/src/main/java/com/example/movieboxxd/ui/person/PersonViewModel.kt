@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieboxxd.person.domain.models.Person
 import com.example.movieboxxd.person.domain.repository.PersonRepository
-import com.example.movieboxxd.utils.K
+import com.example.movieboxxd.utils.DBConstants
 import com.example.movieboxxd.utils.collectAndHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +22,7 @@ class PersonViewModel @Inject constructor(
     private val _personState = MutableStateFlow(PersonState())
     val personState = _personState.asStateFlow()
 
-    val id: Int = savedStateHandle.get<Int>(K.PERSON_ID) ?: -1
+    val id: Int = savedStateHandle.get<Int>(DBConstants.PERSON_ID) ?: -1
 
     init {
         fetchPersonById()

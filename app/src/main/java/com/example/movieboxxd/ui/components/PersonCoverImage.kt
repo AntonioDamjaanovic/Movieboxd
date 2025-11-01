@@ -1,6 +1,5 @@
 package com.example.movieboxxd.ui.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,7 +16,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.movieboxxd.person.domain.models.Person
 import com.example.movieboxxd.ui.theme.Padding
-import com.example.movieboxxd.utils.K
+import com.example.movieboxxd.utils.DBConstants
 
 @Composable
 fun PersonCoverImage(
@@ -25,7 +24,7 @@ fun PersonCoverImage(
     person: Person,
 ) {
     val imgRequest = ImageRequest.Builder(LocalContext.current)
-        .data("${K.BASE_IMAGE_URL}${person.profilePath}")
+        .data("${DBConstants.BASE_IMAGE_URL}${person.profilePath}")
         .crossfade(true)
         .build()
 
