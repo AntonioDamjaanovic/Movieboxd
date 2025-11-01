@@ -5,24 +5,42 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.movieboxxd.ui.auth.AuthViewModel
+import com.example.movieboxxd.ui.auth.LoginScreen
 import com.example.movieboxxd.ui.detail.MovieDetailScreen
 import com.example.movieboxxd.ui.home.HomeScreen
 import com.example.movieboxxd.ui.home.MoreMoviesScreen
 import com.example.movieboxxd.ui.person.PersonScreen
 import com.example.movieboxxd.ui.search.SearchScreen
-import com.example.movieboxxd.utils.K
+import com.example.movieboxxd.utils.DBConstants
 
 @Composable
 fun NavigationGraph(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
+   val authState by authViewModel.authState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(authState) {
+        if (!authState.isLoggedIn) {
+            navController.navigate(Route.Login.route) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination = Route.Home.route,
@@ -33,8 +51,34 @@ fun NavigationGraph(
         popExitTransition = { fadeOut(animationSpec = tween(100)) }
     ) {
         composable(
+            route = Route.Login.route
+        ) {
+            LoginScreen(
+                authState = authState,
+                onLoginClick = { username, password ->
+                    authViewModel.login(username, password)
+                },
+                onAuthenticated = {
+                    navController.navigate(Route.Home.route) {
+                        popUpTo(Route.Login.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+        composable(
             route = Route.Home.route
         ) {
+            if (!authState.isLoggedIn) {
+                LaunchedEffect(Unit) {
+                    navController.navigate(Route.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+                return@composable
+            }
+
             HomeScreen(
                 onMovieClick = { movieId ->
                     navController.navigate(
@@ -67,7 +111,7 @@ fun NavigationGraph(
 
         composable(
             route = Route.MovieWithArgs.route,
-            arguments = listOf(navArgument(name = K.MOVIE_ID) { type = NavType.IntType })
+            arguments = listOf(navArgument(name = DBConstants.MOVIE_ID) { type = NavType.IntType })
         ) {
             MovieDetailScreen(
                 onBackClick = {
@@ -87,7 +131,7 @@ fun NavigationGraph(
         }
         composable(
             route = Route.PersonWithArgs.route,
-            arguments = listOf(navArgument(name = K.PERSON_ID) { type = NavType.IntType } )
+            arguments = listOf(navArgument(name = DBConstants.PERSON_ID) { type = NavType.IntType } )
         ) {
             PersonScreen(
                 onBackClick = {
