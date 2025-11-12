@@ -21,7 +21,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.movieboxxd.movie_detail.domain.models.Cast
-import com.example.movieboxxd.utils.DBConstants
+import com.example.movieboxxd.utils.DB
 import com.example.movieboxxd.R
 
 @Composable
@@ -30,7 +30,7 @@ fun ActorItem(
     cast: Cast
 ) {
     val imageRequest = ImageRequest.Builder(LocalContext.current)
-        .data("${DBConstants.BASE_IMAGE_URL}${cast.profilePath}")
+        .data("${DB.BASE_IMAGE_URL}${cast.profilePath}")
         .crossfade(true)
         .build()
 

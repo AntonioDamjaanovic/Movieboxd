@@ -7,7 +7,7 @@ import com.example.movieboxxd.person.data.remote.models.PersonDto
 import com.example.movieboxxd.person.data.repository_impl.PersonRepositoryImpl
 import com.example.movieboxxd.person.domain.models.Person
 import com.example.movieboxxd.person.domain.repository.PersonRepository
-import com.example.movieboxxd.utils.DBConstants
+import com.example.movieboxxd.utils.DB
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -46,7 +46,7 @@ object PersonModule {
     fun providePersonApiService(): PersonApiService {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl(DBConstants.BASE_URL)
+            .baseUrl(DB.BASE_URL)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(PersonApiService::class.java)

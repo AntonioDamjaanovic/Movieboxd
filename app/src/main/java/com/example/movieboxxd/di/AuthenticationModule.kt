@@ -12,7 +12,10 @@ import com.example.movieboxxd.auth.domain.models.RequestTokenBody
 import com.example.movieboxxd.auth.domain.models.SessionBody
 import com.example.movieboxxd.auth.domain.repository.AuthRepository
 import com.example.movieboxxd.common.data.ApiMapper
-import com.example.movieboxxd.utils.DBConstants
+import com.example.movieboxxd.profile.data.remote.api.ProfileApiService
+import com.example.movieboxxd.profile.data.remote.models.ProfileDto
+import com.example.movieboxxd.profile.domain.models.Profile
+import com.example.movieboxxd.utils.DB
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -37,13 +40,17 @@ object AuthenticationModule {
     @Singleton
     fun provideAuthRepository(
         authApiService: AuthApiService,
-        apiTokenMapper: ApiMapper<RequestTokenBody, RequestTokenDto>,
-        apiSessionMapper: ApiMapper<SessionBody, SessionDto>,
+        profileApiService: ProfileApiService,
+        tokenMapper: ApiMapper<RequestTokenBody, RequestTokenDto>,
+        sessionMapper: ApiMapper<SessionBody, SessionDto>,
+        profileMapper: ApiMapper<Profile, ProfileDto>,
         sessionManager: SessionManager
         ): AuthRepository = AuthRepositoryImpl(
         authApiService = authApiService,
-        apiTokenMapper = apiTokenMapper,
-        apiSessionMapper = apiSessionMapper,
+        profileApiService = profileApiService,
+        tokenMapper = tokenMapper,
+        sessionMapper = sessionMapper,
+        profileMapper = profileMapper,
         sessionManager = sessionManager
     )
 
@@ -66,7 +73,7 @@ object AuthenticationModule {
     fun provideAuthApiService(): AuthApiService {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl(DBConstants.BASE_URL)
+            .baseUrl(DB.BASE_URL)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(AuthApiService::class.java)

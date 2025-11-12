@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.movieboxxd.ui.theme.Padding
 import com.example.movieboxxd.ui.theme.TopContentColor
 
@@ -41,6 +42,7 @@ fun TopContent(
             text = title,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
+            fontSize = 34.sp,
             color = Color.White
         )
         Spacer(modifier = Modifier.height(20.dp))

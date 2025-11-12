@@ -18,7 +18,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.movieboxxd.movie.domain.models.Movie
 import com.example.movieboxxd.ui.theme.Padding
-import com.example.movieboxxd.utils.DBConstants
+import com.example.movieboxxd.utils.DB
 
 @Composable
 fun MovieCoverImage(
@@ -29,7 +29,7 @@ fun MovieCoverImage(
     height: Dp = 180.dp
 ) {
     val imgRequest = ImageRequest.Builder(LocalContext.current)
-        .data("${DBConstants.BASE_IMAGE_URL}${movie.posterPath}")
+        .data("${DB.BASE_IMAGE_URL}${movie.posterPath}")
         .crossfade(true)
         .build()
 
