@@ -6,6 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -21,6 +22,7 @@ class SessionManager @Inject constructor(
     companion object {
         private val SESSION_ID_KEY = stringPreferencesKey("session_id")
         private val IS_LOGGED_IN_KEY = booleanPreferencesKey("is_logged_in")
+        private val ACCOUNT_ID_KEY = intPreferencesKey("account_id")
     }
 
     suspend fun saveSession(sessionId: String) {
@@ -30,9 +32,21 @@ class SessionManager @Inject constructor(
         }
     }
 
-    fun getSessionId(): Flow<String?> {
+    fun getSessionId(): Flow<String> {
         return context.dataStore.data.map { preferences ->
-            preferences[SESSION_ID_KEY]
+            preferences[SESSION_ID_KEY] ?: ""
+        }
+    }
+
+    suspend fun saveAccountId(accountId: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[ACCOUNT_ID_KEY] = accountId
+        }
+    }
+
+    fun getAccountId(): Flow<Int> {
+        return context.dataStore.data.map { preferences ->
+            preferences[ACCOUNT_ID_KEY] ?: -1
         }
     }
 

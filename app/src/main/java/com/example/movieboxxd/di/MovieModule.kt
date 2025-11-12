@@ -7,7 +7,7 @@ import com.example.movieboxxd.movie.data.remote.models.MovieDto
 import com.example.movieboxxd.movie.data.repository_impl.MovieRepositoryImpl
 import com.example.movieboxxd.movie.domain.models.Movie
 import com.example.movieboxxd.movie.domain.repository.MovieRepository
-import com.example.movieboxxd.utils.DBConstants
+import com.example.movieboxxd.utils.DB
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -46,7 +46,7 @@ object MovieModule {
         val contentType = "application/json".toMediaType()
 
         return Retrofit.Builder()
-            .baseUrl(DBConstants.BASE_URL)
+            .baseUrl(DB.BASE_URL)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(MovieApiService::class.java)

@@ -1,6 +1,5 @@
 package com.example.movieboxxd.ui.detail.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,15 +14,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,8 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.movieboxxd.movie.domain.models.Movie
 import com.example.movieboxxd.movie_detail.domain.models.MovieDetail
-import com.example.movieboxxd.movie_detail.domain.models.Review
-import com.example.movieboxxd.ui.components.MovieCoverImage
 import com.example.movieboxxd.ui.theme.BackgroundColor
 import com.example.movieboxxd.ui.theme.Padding
 
@@ -184,95 +175,6 @@ fun DetailBodyContent(
                 similarMovies = similarMovies,
                 isMovieLoading = isMovieLoading,
                 onMovieClick = onMovieClick
-            )
-        }
-    }
-}
-
-@Composable
-fun MoreLikeThis(
-    modifier: Modifier = Modifier,
-    similarMovies: List<Movie>,
-    fetchMovies: () -> Unit,
-    isMovieLoading: Boolean,
-    onMovieClick: (Int) -> Unit
-) {
-    LaunchedEffect(key1 = true) {
-        fetchMovies()
-    }
-
-    Column(modifier) {
-        Text(
-            text = "More like this",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
-        Spacer(modifier = Modifier.height(Padding.itemSpacing))
-        LazyRow {
-            item {
-                AnimatedVisibility(visible = isMovieLoading) {
-                    CircularProgressIndicator()
-                }
-            }
-            items(similarMovies) {
-                MovieCoverImage(movie = it, onMovieClick = onMovieClick)
-            }
-        }
-    }
-}
-
-@Composable
-fun MovieInfoItem(
-    infoItem: List<String>,
-    title: String
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-
-        infoItem.forEach {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
-        }
-    }
-}
-
-@Composable
-private fun Review(
-    modifier: Modifier = Modifier,
-    reviews: List<Review>
-) {
-    val (viewMore, setViewMore) = remember {
-        mutableStateOf(false)
-    }
-    val defaultReview = if (reviews.size > 3) reviews.take(3) else reviews
-    val movieReviews = if (viewMore) reviews else defaultReview
-    val buttonText = if (viewMore) "Collapse" else "More..."
-
-    Column {
-        movieReviews.forEach { review ->
-            ReviewItem(review = review)
-            Spacer(modifier = Modifier.height(Padding.itemSpacing))
-            HorizontalDivider(modifier = Modifier.fillMaxWidth())
-            Spacer(modifier = Modifier.height(Padding.itemSpacing))
-        }
-
-        TextButton(onClick = { setViewMore(!viewMore) }) {
-            Text(
-                text = buttonText
             )
         }
     }

@@ -21,8 +21,9 @@ import com.example.movieboxxd.ui.detail.MovieDetailScreen
 import com.example.movieboxxd.ui.home.HomeScreen
 import com.example.movieboxxd.ui.home.MoreMoviesScreen
 import com.example.movieboxxd.ui.person.PersonScreen
+import com.example.movieboxxd.ui.profile.ProfileScreen
 import com.example.movieboxxd.ui.search.SearchScreen
-import com.example.movieboxxd.utils.DBConstants
+import com.example.movieboxxd.utils.DB
 
 @Composable
 fun NavigationGraph(
@@ -111,7 +112,7 @@ fun NavigationGraph(
 
         composable(
             route = Route.MovieWithArgs.route,
-            arguments = listOf(navArgument(name = DBConstants.MOVIE_ID) { type = NavType.IntType })
+            arguments = listOf(navArgument(name = DB.MOVIE_ID) { type = NavType.IntType })
         ) {
             MovieDetailScreen(
                 onBackClick = {
@@ -122,7 +123,7 @@ fun NavigationGraph(
                         Route.MovieWithArgs.getRoute(movieId)
                     )
                 },
-                onActorClick = { personId ->
+                onPersonClick = { personId ->
                     navController.navigate(
                         Route.PersonWithArgs.getRoute(personId)
                     )
@@ -131,7 +132,7 @@ fun NavigationGraph(
         }
         composable(
             route = Route.PersonWithArgs.route,
-            arguments = listOf(navArgument(name = DBConstants.PERSON_ID) { type = NavType.IntType } )
+            arguments = listOf(navArgument(name = DB.PERSON_ID) { type = NavType.IntType } )
         ) {
             PersonScreen(
                 onBackClick = {
@@ -149,6 +150,14 @@ fun NavigationGraph(
                 }
             )
         }
-        composable(Route.Profile.route) { /* ProfileScreen() */ }
+        composable(Route.Profile.route) {
+            ProfileScreen(
+                onMovieClick = { movieId ->
+                    navController.navigate(
+                        Route.MovieWithArgs.getRoute(movieId)
+                    )
+                }
+            )
+        }
     }
 }

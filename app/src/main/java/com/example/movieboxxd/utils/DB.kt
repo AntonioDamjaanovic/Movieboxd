@@ -1,6 +1,6 @@
 package com.example.movieboxxd.utils
 
-object DBConstants {
+object DB {
     const val BASE_URL = "https://api.themoviedb.org/3/"
     const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w500/"
     const val DISCOVER_MOVIE_ENDPOINT = "discover/movie"
@@ -12,6 +12,10 @@ object DBConstants {
     const val MOVIE_ID = "id"
     const val PERSON_ID = "id"
 
+    const val ADD_RATING_ENDPOINT = "rating"
+    const val ADD_FAVORITE_ENDPOINT = "favorite"
+    const val ADD_TO_WATCHLIST_ENDPOINT = "watchlist"
+
     const val SEARCH_URL_ENDPOINT = "search/movie"
 
     const val AUTHENTICATION_ENDPOINT = "authentication"
@@ -19,4 +23,10 @@ object DBConstants {
     const val SESSION_ENDPOINT = "session"
     const val NEW_ENDPOINT = "new"
     const val LOGIN_ENDPOINT = "validate_with_login"
+
+    const val ACCOUNT_ENDPOINT = "account"
+    const val ACCOUNT_ID = "id"
+    const val FAVORITES_ENDPOINT = "favorite/movies"
+    const val WATCHLIST_ENDPOINT = "watchlist/movies"
+    const val RATED_MOVIES_ENDPOINT = "rated/movies"
 }

@@ -6,10 +6,12 @@ import com.example.movieboxxd.movie.domain.models.Movie
 import com.example.movieboxxd.movie_detail.data.mapper_impl.MovieDetailMapper
 import com.example.movieboxxd.movie_detail.data.remote.api.MovieDetailApiService
 import com.example.movieboxxd.movie_detail.data.remote.models.MovieDetailDto
+import com.example.movieboxxd.movie_detail.data.remote.models.StatusDto
 import com.example.movieboxxd.movie_detail.data.repository_impl.MovieDetailRepositoryImpl
 import com.example.movieboxxd.movie_detail.domain.models.MovieDetail
 import com.example.movieboxxd.movie_detail.domain.repository.MovieDetailRepository
-import com.example.movieboxxd.utils.DBConstants
+import com.example.movieboxxd.profile.domain.models.Status
+import com.example.movieboxxd.utils.DB
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -33,12 +35,14 @@ object MovieDetailModule {
     @Singleton
     fun provideMovieDetailRepository(
         movieDetailApiService: MovieDetailApiService,
-        apiDetailMapper: ApiMapper<MovieDetail, MovieDetailDto>,
-        apiMovieMapper: ApiMapper<List<Movie>, MovieDto>
+        movieDetailMapper: ApiMapper<MovieDetail, MovieDetailDto>,
+        movieMapper: ApiMapper<List<Movie>, MovieDto>,
+        statusMapper: ApiMapper<Status, StatusDto>
     ): MovieDetailRepository = MovieDetailRepositoryImpl(
         movieDetailApiService = movieDetailApiService,
-        apiDetailMapper = apiDetailMapper,
-        apiMovieMapper = apiMovieMapper
+        movieDetailMapper = movieDetailMapper,
+        movieMapper = movieMapper,
+        statusMapper = statusMapper
     )
 
     @Provides
@@ -50,7 +54,7 @@ object MovieDetailModule {
     fun provideMovieDetailApiService(): MovieDetailApiService {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl(DBConstants.BASE_URL)
+            .baseUrl(DB.BASE_URL)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(MovieDetailApiService::class.java)

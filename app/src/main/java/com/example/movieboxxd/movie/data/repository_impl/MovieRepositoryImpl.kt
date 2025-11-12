@@ -52,9 +52,9 @@ class MovieRepositoryImpl(
         emit(Response.Loading())
 
         val movieDto = movieApiService.searchMovie(query = query)
-        val movie = apiMapper.mapToDomain(movieDto)
+        val movies = apiMapper.mapToDomain(movieDto)
 
-        emit(Response.Success(movie))
+        emit(Response.Success(movies))
     }.catch { e ->
         e.printStackTrace()
         emit(Response.Error(e))

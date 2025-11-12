@@ -13,6 +13,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +26,7 @@ import com.example.movieboxxd.ui.components.ErrorView
 import com.example.movieboxxd.ui.components.LoadingView
 import com.example.movieboxxd.ui.detail.components.DetailBodyContent
 import com.example.movieboxxd.ui.detail.components.DetailTopContent
+import com.example.movieboxxd.ui.detail.components.MovieMoreOptionsBottomSheet
 import com.example.movieboxxd.ui.theme.Padding
 
 @Composable
@@ -31,9 +35,10 @@ fun MovieDetailScreen(
     detailViewModel: DetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     onMovieClick: (Int) -> Unit,
-    onActorClick: (Int) -> Unit
+    onPersonClick: (Int) -> Unit
 ) {
     val state by detailViewModel.detailState.collectAsStateWithLifecycle()
+    var showMenu by remember { mutableStateOf(false) }
 
     Box(modifier = modifier.fillMaxWidth()) {
         when {
@@ -62,7 +67,7 @@ fun MovieDetailScreen(
                             fetchMovies = detailViewModel::fetchRecommendedMovies,
                             isMovieLoading = state.isMovieLoading,
                             onMovieClick = onMovieClick,
-                            onPersonClick = onActorClick,
+                            onPersonClick = onPersonClick,
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
                                 .height(bodyItemHeight)
@@ -84,7 +89,9 @@ fun MovieDetailScreen(
             )
         }
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                showMenu = !showMenu
+            },
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(top = 40.dp, end = Padding.default)
@@ -95,5 +102,18 @@ fun MovieDetailScreen(
                 tint = Color.White
             )
         }
+    }
+    state.movieDetail?.let { movieDetail ->
+        MovieMoreOptionsBottomSheet(
+            movieDetail = movieDetail,
+            show = showMenu,
+            onDismiss = { showMenu = !showMenu },
+            onWatchClick = {  },
+            onWatchlistClick = { detailViewModel.addMovieToWatchlist(movieId = movieDetail.id) },
+            onFavoriteClick = { detailViewModel.addFavoriteMovie(movieId = movieDetail.id) },
+            onRateClick = { movieRating ->
+                detailViewModel.rateMovie(movieRating)
+            }
+        )
     }
 }
