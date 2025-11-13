@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.dp
 
 object Padding {
     val default = 16.dp
+    val biggerDefault = 20.dp
     val defaultBottomSheet = 10.dp
     val itemSpacing = 6.dp
     val horizontalSpacing = 30.dp

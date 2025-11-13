@@ -19,8 +19,12 @@ sealed class Route(val route: String) {
     }
 
     object Search: Route("search")
+
     object Profile: Route("profile")
     object ProfileWithArgs: Route("profile/{id}") {
         fun getRoute(id: Int) = "profile/$id"
+    }
+    object ProfileMovies: Route("profileMovies/{type}") {
+        fun getRoute(type: String) = "profileMovies/$type"
     }
 }

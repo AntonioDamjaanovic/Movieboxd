@@ -21,6 +21,7 @@ import com.example.movieboxxd.ui.detail.MovieDetailScreen
 import com.example.movieboxxd.ui.home.HomeScreen
 import com.example.movieboxxd.ui.home.MoreMoviesScreen
 import com.example.movieboxxd.ui.person.PersonScreen
+import com.example.movieboxxd.ui.profile.ProfileMovies
 import com.example.movieboxxd.ui.profile.ProfileScreen
 import com.example.movieboxxd.ui.search.SearchScreen
 import com.example.movieboxxd.utils.DB
@@ -156,6 +157,29 @@ fun NavigationGraph(
                     navController.navigate(
                         Route.MovieWithArgs.getRoute(movieId)
                     )
+                },
+                onMoreMoviesClick = { type ->
+                    navController.navigate(
+                        Route.ProfileMovies.getRoute(type)
+                    )
+                }
+            )
+        }
+        composable(
+            route = Route.ProfileMovies.route,
+            arguments = listOf(navArgument("type") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val type = backStackEntry.arguments?.getString("type") ?: "empty"
+
+            ProfileMovies(
+                type = type,
+                onMovieClick = { movieId ->
+                    navController.navigate(
+                        Route.MovieWithArgs.getRoute(movieId)
+                    )
+                },
+                onBackClick = {
+                    navController.popBackStack()
                 }
             )
         }

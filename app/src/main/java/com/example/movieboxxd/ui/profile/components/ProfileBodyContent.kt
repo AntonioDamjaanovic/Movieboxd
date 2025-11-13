@@ -6,11 +6,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.example.movieboxxd.movie.domain.models.Movie
 import com.example.movieboxxd.profile.domain.models.Profile
 import com.example.movieboxxd.ui.components.LoadingView
@@ -32,7 +38,8 @@ fun ProfileBodyContent(
     favoriteMovies: List<Movie>,
     ratedMovies: List<Movie>,
     watchlistMovies: List<Movie>,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    onMoreMoviesClick: (String) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -48,9 +55,17 @@ fun ProfileBodyContent(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            ProfilePicture(
-                profile = profile
-            )
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Padding.biggerDefault)
+            ) {
+                ProfilePicture(
+                    profile = profile
+                )
+            }
             HorizontalDivider()
 
             Column(
@@ -58,12 +73,29 @@ fun ProfileBodyContent(
                     .fillMaxWidth()
                     .padding(horizontal = Padding.default, vertical = Padding.verticalSpacing)
             ) {
-                Text(
-                    text = "Favorites",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Favorites",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White
+                    )
+                    IconButton(
+                        onClick = { onMoreMoviesClick("favorites") }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                            contentDescription = "More favorite movies",
+                            modifier = Modifier.size(18.dp),
+                            tint = Color.White
+                        )
+                    }
+                }
                 if (favoriteMovies.isEmpty()) {
                     Text(
                         text = "No favorite movies",
@@ -89,12 +121,29 @@ fun ProfileBodyContent(
                     .fillMaxWidth()
                     .padding(horizontal = Padding.default, vertical = Padding.verticalSpacing)
             ) {
-                Text(
-                    text = "Recent activity",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Recent activity",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White
+                    )
+                    IconButton(
+                        onClick = { onMoreMoviesClick("watched") }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                            contentDescription = "More watched movies",
+                            modifier = Modifier.size(18.dp),
+                            tint = Color.White
+                        )
+                    }
+                }
                 if (ratedMovies.isEmpty()) {
                     Text(
                         text = "No recent activity",
@@ -120,12 +169,29 @@ fun ProfileBodyContent(
                     .fillMaxWidth()
                     .padding(horizontal = Padding.default, vertical = Padding.verticalSpacing)
             ) {
-                Text(
-                    text = "Watchlist",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Watchlist",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White
+                    )
+                    IconButton(
+                        onClick = { onMoreMoviesClick("watchlist") }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                            contentDescription = "More Watchlist",
+                            modifier = Modifier.size(18.dp),
+                            tint = Color.White
+                        )
+                    }
+                }
                 if (watchlistMovies.isEmpty()) {
                     Text(
                         text = "Watchlist is empty",

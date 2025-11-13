@@ -21,7 +21,8 @@ import com.example.movieboxxd.ui.profile.components.ProfileBodyContent
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     profileViewModel: ProfileViewModel = hiltViewModel(),
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    onMoreMoviesClick: (String) -> Unit
 ) {
     val state by profileViewModel.profileState.collectAsStateWithLifecycle()
 
@@ -46,6 +47,7 @@ fun ProfileScreen(
                             ratedMovies = state.ratedMovies,
                             watchlistMovies = state.watchlistMovies,
                             onMovieClick = onMovieClick,
+                            onMoreMoviesClick = onMoreMoviesClick,
                             modifier = Modifier
                                 .weight(0.85f)
                         )

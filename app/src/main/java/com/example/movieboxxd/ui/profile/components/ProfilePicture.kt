@@ -26,7 +26,7 @@ fun ProfilePicture(
     modifier: Modifier = Modifier,
     profile: Profile,
     width: Dp = 120.dp,
-    height: Dp = 180.dp
+    height: Dp = 120.dp
 ) {
     val imageRequest = ImageRequest.Builder(LocalContext.current)
         .data("${DB.BASE_IMAGE_URL}${profile.avatar.tmdb.avatarPath}")

@@ -1,4 +1,4 @@
-package com.example.movieboxxd.ui.home
+package com.example.movieboxxd.ui.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,17 +17,18 @@ import com.example.movieboxxd.ui.home.components.MovieGrid
 import com.example.movieboxxd.ui.theme.BackgroundColor
 
 @Composable
-fun MoreMoviesScreen(
+fun ProfileMovies(
     modifier: Modifier = Modifier,
-    homeViewModel: HomeViewModel = hiltViewModel(),
+    profileViewModel: ProfileViewModel = hiltViewModel(),
     type: String,
     onMovieClick: (Int) -> Unit,
     onBackClick: () -> Unit
 ) {
-    val state by homeViewModel.homeState.collectAsStateWithLifecycle()
+    val state by profileViewModel.profileState.collectAsStateWithLifecycle()
     val movies = when (type) {
-        "trending" -> state.trendingMovies
-        "discover" -> state.discoverMovies
+        "watched" -> state.ratedMovies
+        "favorites" -> state.favoriteMovies
+        "watchlist" -> state.watchlistMovies
         else -> emptyList()
     }
 
@@ -46,7 +47,12 @@ fun MoreMoviesScreen(
                         .background(BackgroundColor)
                 ) {
                     Header(
-                        title = if (type == "trending") "Popular this week" else "Discover movies",
+                        title = when (type) {
+                            "watched" -> "Watched movies"
+                            "favorites" -> "Favorite movies"
+                            "watchlist" -> "Watchlist"
+                            else -> "Movies"
+                        },
                         onBackClick = onBackClick,
                         modifier = Modifier
                             .fillMaxWidth()
