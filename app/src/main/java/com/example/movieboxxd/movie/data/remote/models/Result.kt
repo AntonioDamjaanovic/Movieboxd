@@ -33,5 +33,7 @@ data class Result(
     @SerialName("vote_average")
     val voteAverage: Double? = null,
     @SerialName("vote_count")
-    val voteCount: Int? = null
+    val voteCount: Int? = null,
+    @SerialName("rating")
+    val rating: Double? = null
 )

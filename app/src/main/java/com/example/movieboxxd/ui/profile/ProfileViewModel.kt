@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +23,11 @@ class ProfileViewModel @Inject constructor(
 ): ViewModel() {
     private val _profileState = MutableStateFlow(ProfileState())
     val profileState = _profileState.asStateFlow()
+
+    val favoriteMoviesIds = profileState.map { it.favoriteMovies.map(Movie::id).toSet() }
+    val ratedMoviesMap = profileState.map { it.ratedMovies
+        .associateBy({ it.id }, { it.rating / 2 }) }
+    val watchlistMoviesIds = profileState.map { it.watchlistMovies.map(Movie::id).toSet() }
 
     init {
         fetchAccountDetailsById()

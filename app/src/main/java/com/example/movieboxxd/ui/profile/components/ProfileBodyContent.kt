@@ -1,6 +1,7 @@
 package com.example.movieboxxd.ui.profile.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,9 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.movieboxxd.movie.domain.models.Movie
 import com.example.movieboxxd.profile.domain.models.Profile
-import com.example.movieboxxd.ui.components.LoadingView
 import com.example.movieboxxd.ui.components.MovieCoverImage
 import com.example.movieboxxd.ui.theme.BackgroundColor
 import com.example.movieboxxd.ui.theme.Padding
@@ -104,7 +105,7 @@ fun ProfileBodyContent(
                         color = Color.White
                     )
                 } else {
-                    LazyRow() {
+                    LazyRow {
                         items(favoriteMovies) { movie ->
                             MovieCoverImage(
                                 movie = movie,
@@ -152,7 +153,7 @@ fun ProfileBodyContent(
                         color = Color.White
                     )
                 } else {
-                    LazyRow() {
+                    LazyRow {
                         items(ratedMovies) { movie ->
                             MovieCoverImage(
                                 movie = movie,
@@ -200,7 +201,7 @@ fun ProfileBodyContent(
                         color = Color.White
                     )
                 } else {
-                    LazyRow() {
+                    LazyRow {
                         items(watchlistMovies) { movie ->
                             MovieCoverImage(
                                 movie = movie,
@@ -208,6 +209,83 @@ fun ProfileBodyContent(
                             )
                         }
                     }
+                }
+            }
+            HorizontalDivider()
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = Padding.default, vertical = Padding.verticalSpacing)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = Padding.biggerItemSpacing)
+                        .clickable { onMoreMoviesClick("watched") }
+                ) {
+                    Text(
+                        text = "Films",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 22.sp,
+                        color = Color.Gray
+                    )
+                    Text(
+                        text = "${ratedMovies.count()}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 22.sp,
+                        color = Color.Gray
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = Padding.biggerItemSpacing)
+                        .clickable { onMoreMoviesClick("favorites") }
+                ) {
+                    Text(
+                        text = "Favorites",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 22.sp,
+                        color = Color.Gray
+                    )
+                    Text(
+                        text = "${favoriteMovies.count()}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 22.sp,
+                        color = Color.Gray
+                    )
+                }
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = Padding.biggerItemSpacing)
+                        .clickable { onMoreMoviesClick("watchlist") }
+                ) {
+                    Text(
+                        text = "Watchlist",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 22.sp,
+                        color = Color.Gray
+                    )
+                    Text(
+                        text = "${watchlistMovies.count()}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 22.sp,
+                        color = Color.Gray
+                    )
                 }
             }
         }

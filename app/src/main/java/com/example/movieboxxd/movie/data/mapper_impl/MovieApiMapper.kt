@@ -22,7 +22,8 @@ class MovieApiMapper: ApiMapper<List<Movie>, MovieDto> {
                 title = formatEmptyValue(result?.title, "title"),
                 voteAverage = result?.voteAverage ?: 0.0,
                 voteCount = result?.voteCount ?: 0,
-                video = result?.video ?: false
+                video = result?.video ?: false,
+                rating = result?.rating ?: 0.0
             )
         } ?: emptyList()
     }

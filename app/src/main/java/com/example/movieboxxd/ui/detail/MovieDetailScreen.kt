@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,13 +28,16 @@ import com.example.movieboxxd.ui.components.LoadingView
 import com.example.movieboxxd.ui.detail.components.DetailBodyContent
 import com.example.movieboxxd.ui.detail.components.DetailTopContent
 import com.example.movieboxxd.ui.detail.components.MovieMoreOptionsBottomSheet
+import com.example.movieboxxd.ui.profile.ProfileViewModel
 import com.example.movieboxxd.ui.theme.Padding
 
 @Composable
 fun MovieDetailScreen(
     modifier: Modifier = Modifier,
     detailViewModel: DetailViewModel = hiltViewModel(),
+    profileViewModel: ProfileViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
+    onSave: (Int) -> Unit,
     onMovieClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit
 ) {
@@ -103,12 +107,19 @@ fun MovieDetailScreen(
             )
         }
     }
+    val favoriteMoviesIds by profileViewModel.favoriteMoviesIds.collectAsState(initial = emptySet())
+    val ratedMoviesMap by profileViewModel.ratedMoviesMap.collectAsState(initial = emptyMap())
+    val watchlistMoviesIds by profileViewModel.watchlistMoviesIds.collectAsState(initial = emptySet())
+
     state.movieDetail?.let { movieDetail ->
         MovieMoreOptionsBottomSheet(
             movieDetail = movieDetail,
             show = showMenu,
+            userRating = ratedMoviesMap[movieDetail.id] ?: 0.0,
+            initialIsFavorite = favoriteMoviesIds.contains(movieDetail.id),
+            initialIsInWatchlist = watchlistMoviesIds.contains(movieDetail.id),
             onDismiss = { showMenu = !showMenu },
-            onWatchClick = {  },
+            onSave = onSave,
             onWatchlistClick = { detailViewModel.addMovieToWatchlist(movieId = movieDetail.id) },
             onFavoriteClick = { detailViewModel.addFavoriteMovie(movieId = movieDetail.id) },
             onRateClick = { movieRating ->

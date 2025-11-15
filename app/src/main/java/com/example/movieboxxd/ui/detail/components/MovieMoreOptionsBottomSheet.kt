@@ -29,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -43,17 +44,25 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movieboxxd.movie_detail.domain.models.MovieDetail
+import com.example.movieboxxd.ui.components.LoadingView
 import com.example.movieboxxd.ui.theme.BackgroundColor
 import com.example.movieboxxd.ui.theme.DefaultColor
 import com.example.movieboxxd.ui.theme.Padding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieMoreOptionsBottomSheet(
     movieDetail: MovieDetail,
     show: Boolean,
+    userRating: Double,
+    initialIsFavorite: Boolean,
+    initialIsInWatchlist: Boolean,
     onDismiss: () -> Unit,
-    onWatchClick: () -> Unit,
+    onSave: (Int) -> Unit,
     onWatchlistClick: () -> Unit,
     onFavoriteClick: () -> Unit,
     onRateClick: (Double) -> Unit
@@ -62,6 +71,15 @@ fun MovieMoreOptionsBottomSheet(
     var isFavorite by remember { mutableStateOf(false) }
     var isInWatchlist by remember { mutableStateOf(false) }
     var selectedRating by remember { mutableDoubleStateOf(0.0) }
+
+    LaunchedEffect(movieDetail.id,show) {
+        if (show) {
+            isWatched = userRating != 0.0
+            isFavorite = initialIsFavorite
+            isInWatchlist = initialIsInWatchlist
+            selectedRating = userRating
+        }
+    }
 
     if (show) {
         ModalBottomSheet(
@@ -195,14 +213,18 @@ fun MovieMoreOptionsBottomSheet(
             Spacer(modifier = Modifier.height(24.dp))
             Button(
                 onClick = {
-                    if (isFavorite) onFavoriteClick()
-                    if (isInWatchlist) onWatchlistClick()
-                    if (selectedRating > 0.0) {
-                        onRateClick(selectedRating * 2)
-                    } else if (selectedRating == 0.0 && isWatched) {
-                        onRateClick(5.0)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        if (isFavorite) onFavoriteClick()
+                        if (isInWatchlist) onWatchlistClick()
+                        if (selectedRating > 0.0) {
+                            onRateClick(selectedRating * 2)
+                        } else if (selectedRating == 0.0 && isWatched) {
+                            onRateClick(5.0)
+                        }
+                        onDismiss()
+                        delay(2000)
+                        onSave(movieDetail.id)
                     }
-                    onDismiss()
                 },
                 modifier = Modifier.fillMaxWidth().padding(16.dp)
             ) {
