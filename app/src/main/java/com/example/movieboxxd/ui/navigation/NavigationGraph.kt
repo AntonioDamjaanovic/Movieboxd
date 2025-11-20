@@ -119,14 +119,6 @@ fun NavigationGraph(
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onSave = { movieId ->
-                    navController.navigate(
-                        Route.MovieWithArgs.getRoute(movieId)
-                    ) {
-                        popUpTo(Route.MovieWithArgs.route) { inclusive = true }
-                        launchSingleTop = true
-                    }
-                },
                 onMovieClick = { movieId ->
                     navController.navigate(
                         Route.MovieWithArgs.getRoute(movieId)

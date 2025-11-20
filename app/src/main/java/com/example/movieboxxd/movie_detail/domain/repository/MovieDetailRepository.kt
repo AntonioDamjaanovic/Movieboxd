@@ -15,4 +15,5 @@ interface MovieDetailRepository {
     fun rateMovie(sessionId: String, movieId: Int, movieRatingDto: MovieRatingDto): Flow<Response<Status>>
     fun addFavoriteMovie(accountId: Int, sessionId: String, mediaDto: FavoriteMediaDto): Flow<Response<Status>>
     fun addMovieToWatchlist(accountId: Int, sessionId: String, mediaDto: WatchlistMediaDto): Flow<Response<Status>>
+    fun deleteMovieRating(movieId: Int, sessionId: String): Flow<Response<Status>>
 }

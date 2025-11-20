@@ -89,4 +89,18 @@ class MovieDetailRepositoryImpl(
         e.printStackTrace()
         emit(Response.Error(e))
     }
+
+    override fun deleteMovieRating(
+        movieId: Int,
+        sessionId: String
+    ): Flow<Response<Status>> = flow {
+        emit(Response.Loading())
+        val statusDto = movieDetailApiService.deleteRating(movieId = movieId, sessionId = sessionId)
+        statusMapper.mapToDomain(statusDto).apply {
+            emit(Response.Success(this))
+        }
+    }.catch { e ->
+        e.printStackTrace()
+        emit(Response.Error(e))
+    }
 }

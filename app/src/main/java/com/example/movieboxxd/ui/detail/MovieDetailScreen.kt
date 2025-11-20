@@ -37,12 +37,14 @@ fun MovieDetailScreen(
     detailViewModel: DetailViewModel = hiltViewModel(),
     profileViewModel: ProfileViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    onSave: (Int) -> Unit,
     onMovieClick: (Int) -> Unit,
     onPersonClick: (Int) -> Unit
 ) {
     val state by detailViewModel.detailState.collectAsStateWithLifecycle()
     var showMenu by remember { mutableStateOf(false) }
+    val favoriteMoviesIds by profileViewModel.favoriteMoviesIds.collectAsStateWithLifecycle(initialValue = emptySet())
+    val ratedMoviesMap by profileViewModel.ratedMoviesMap.collectAsStateWithLifecycle(initialValue = emptyMap())
+    val watchlistMoviesIds by profileViewModel.watchlistMoviesIds.collectAsStateWithLifecycle(initialValue = emptySet())
 
     Box(modifier = modifier.fillMaxWidth()) {
         when {
@@ -107,9 +109,6 @@ fun MovieDetailScreen(
             )
         }
     }
-    val favoriteMoviesIds by profileViewModel.favoriteMoviesIds.collectAsState(initial = emptySet())
-    val ratedMoviesMap by profileViewModel.ratedMoviesMap.collectAsState(initial = emptyMap())
-    val watchlistMoviesIds by profileViewModel.watchlistMoviesIds.collectAsState(initial = emptySet())
 
     state.movieDetail?.let { movieDetail ->
         MovieMoreOptionsBottomSheet(
@@ -119,12 +118,18 @@ fun MovieDetailScreen(
             initialIsFavorite = favoriteMoviesIds.contains(movieDetail.id),
             initialIsInWatchlist = watchlistMoviesIds.contains(movieDetail.id),
             onDismiss = { showMenu = !showMenu },
-            onSave = onSave,
-            onWatchlistClick = { detailViewModel.addMovieToWatchlist(movieId = movieDetail.id) },
-            onFavoriteClick = { detailViewModel.addFavoriteMovie(movieId = movieDetail.id) },
+            onSave = {
+                profileViewModel.fetchRatedMovies()
+                profileViewModel.fetchFavoriteMovies()
+                profileViewModel.fetchWatchlistMovies()
+                detailViewModel.fetchMovieDetailById()
+            },
+            onWatchlistClick = { isOnWatchlist -> detailViewModel.addMovieToWatchlist(isOnWatchlist) },
+            onFavoriteClick = { isFavorite -> detailViewModel.addFavoriteMovie(isFavorite) },
             onRateClick = { movieRating ->
                 detailViewModel.rateMovie(movieRating)
-            }
+            },
+            onDeleteRating = { detailViewModel.deleteMovieRating() },
         )
     }
 }

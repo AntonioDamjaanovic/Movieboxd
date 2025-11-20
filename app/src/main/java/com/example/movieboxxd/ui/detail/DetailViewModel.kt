@@ -1,5 +1,6 @@
 package com.example.movieboxxd.ui.detail
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,19 +30,19 @@ class DetailViewModel @Inject constructor(
     private val _detailState = MutableStateFlow(DetailState())
     val detailState = _detailState.asStateFlow()
 
-    private val id: Int = savedStateHandle.get<Int>(DB.MOVIE_ID) ?: -1
+    private val movieId: Int = savedStateHandle.get<Int>(DB.MOVIE_ID) ?: -1
 
     init {
         fetchMovieDetailById()
     }
 
-    private fun fetchMovieDetailById() = viewModelScope.launch {
-        if (id == -1) {
+    fun fetchMovieDetailById() = viewModelScope.launch {
+        if (movieId == -1) {
             _detailState.update {
                 it.copy(isLoading = false, error = "Movie not found")
             }
         } else {
-            repository.fetchMovieDetail(id).collectAndHandle(
+            repository.fetchMovieDetail(movieId).collectAndHandle(
                 onError = { error ->
                     _detailState.update {
                         it.copy(isLoading = false, error = error?.message)
@@ -53,20 +54,20 @@ class DetailViewModel @Inject constructor(
                     }
                 }
             ) { movieDetail ->
-                    _detailState.update {
-                        it.copy(isLoading = false, error = null, movieDetail = movieDetail)
-                    }
+                _detailState.update {
+                    it.copy(isLoading = false, error = null, movieDetail = movieDetail)
+                }
             }
         }
     }
 
     fun fetchRecommendedMovies() = viewModelScope.launch {
-        if (id == -1) {
+        if (movieId == -1) {
             _detailState.update {
                 it.copy(isLoading = false, error = "Similar movies not found")
             }
         } else {
-            repository.fetchRecommendedMovies(id).collectAndHandle(
+            repository.fetchRecommendedMovies(movieId).collectAndHandle(
                 onError = { error ->
                     _detailState.update {
                         it.copy(isMovieLoading = false, error = error?.message)
@@ -86,7 +87,7 @@ class DetailViewModel @Inject constructor(
     }
 
     fun rateMovie(movieRating: Double) = viewModelScope.launch {
-        if (id == -1) {
+        if (movieId == -1) {
             _detailState.update {
                 it.copy(isLoading = false, error = "Movie not found")
             }
@@ -95,7 +96,7 @@ class DetailViewModel @Inject constructor(
             val movieRatingDto = MovieRatingDto(
                 value = movieRating
             )
-            repository.rateMovie(movieId = id, sessionId = sessionId, movieRatingDto = movieRatingDto)
+            repository.rateMovie(movieId = movieId, sessionId = sessionId, movieRatingDto = movieRatingDto)
                 .collectAndHandle(
                     onError = { error ->
                         _detailState.update {
@@ -117,16 +118,45 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun addFavoriteMovie(movieId: Int) = viewModelScope.launch {
+    fun deleteMovieRating() = viewModelScope.launch {
+        if (movieId == -1) {
+            _detailState.update {
+                it.copy(isLoading = false, error = "Movie not found")
+            }
+        } else {
+            val sessionId = sessionManager.getSessionId().first()
+            repository.deleteMovieRating(movieId = movieId, sessionId = sessionId)
+                .collectAndHandle(
+                    onError = { error ->
+                        _detailState.update {
+                            it.copy(isLoading = false, error = error?.message)
+                        }
+                    },
+                    onLoading = {
+                        _detailState.update {
+                            it.copy(isLoading = true, error = null)
+                        }
+                    }
+                ) { status ->
+                    if (status.success) {
+                        _detailState.update { it.copy(isLoading = false, error = null) }
+                    } else {
+                        _detailState.update { it.copy(isLoading = false, error = "Failed to delete movie rating") }
+                    }
+                }
+        }
+    }
+
+    fun addFavoriteMovie(isFavorite: Boolean) = viewModelScope.launch {
         val accountId = sessionManager.getAccountId().first()
-        if (accountId == -1) {
+        if (accountId == -1 && movieId == -1) {
             _detailState.update {
                 it.copy(isLoading = false, error = "Error with marking movie as a favorite")
             }
         } else {
             val sessionId = sessionManager.getSessionId().first()
             val mediaDto = FavoriteMediaDto(
-                favorite = true,
+                favorite = isFavorite,
                 mediaType = "movie",
                 mediaId = movieId,
             )
@@ -151,16 +181,16 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun addMovieToWatchlist(movieId: Int) = viewModelScope.launch {
+    fun addMovieToWatchlist(isOnWatchlist: Boolean) = viewModelScope.launch {
         val accountId = sessionManager.getAccountId().first()
-        if (accountId == -1) {
+        if (accountId == -1 && movieId == -1) {
             _detailState.update {
                 it.copy(isLoading = false, error = "Error with adding movie to watchlist")
             }
         } else {
             val sessionId = sessionManager.getSessionId().first()
             val mediaDto = WatchlistMediaDto(
-                watchlist = true,
+                watchlist = isOnWatchlist,
                 mediaType = "movie",
                 mediaId = movieId,
             )

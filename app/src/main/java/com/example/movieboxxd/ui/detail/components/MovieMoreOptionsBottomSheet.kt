@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movieboxxd.movie_detail.domain.models.MovieDetail
-import com.example.movieboxxd.ui.components.LoadingView
+import com.example.movieboxxd.ui.detail.DetailViewModel
 import com.example.movieboxxd.ui.theme.BackgroundColor
 import com.example.movieboxxd.ui.theme.DefaultColor
 import com.example.movieboxxd.ui.theme.Padding
@@ -62,21 +62,22 @@ fun MovieMoreOptionsBottomSheet(
     initialIsFavorite: Boolean,
     initialIsInWatchlist: Boolean,
     onDismiss: () -> Unit,
-    onSave: (Int) -> Unit,
-    onWatchlistClick: () -> Unit,
-    onFavoriteClick: () -> Unit,
-    onRateClick: (Double) -> Unit
+    onSave: () -> Unit,
+    onWatchlistClick: (Boolean) -> Unit,
+    onFavoriteClick: (Boolean) -> Unit,
+    onRateClick: (Double) -> Unit,
+    onDeleteRating: () -> Unit
 ) {
     var isWatched by remember { mutableStateOf(false) }
     var isFavorite by remember { mutableStateOf(false) }
-    var isInWatchlist by remember { mutableStateOf(false) }
+    var isOnWatchlist by remember { mutableStateOf(false) }
     var selectedRating by remember { mutableDoubleStateOf(0.0) }
 
     LaunchedEffect(movieDetail.id,show) {
         if (show) {
             isWatched = userRating != 0.0
             isFavorite = initialIsFavorite
-            isInWatchlist = initialIsInWatchlist
+            isOnWatchlist = initialIsInWatchlist
             selectedRating = userRating
         }
     }
@@ -168,12 +169,12 @@ fun MovieMoreOptionsBottomSheet(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        IconButton(onClick = { isInWatchlist = !isInWatchlist }) {
+                        IconButton(onClick = { isOnWatchlist = !isOnWatchlist }) {
                             Icon(
-                                imageVector = if (isInWatchlist) Icons.Filled.WatchLater else Icons.Outlined.WatchLater,
+                                imageVector = if (isOnWatchlist) Icons.Filled.WatchLater else Icons.Outlined.WatchLater,
                                 contentDescription = "Watchlist",
                                 modifier = Modifier.size(100.dp),
-                                tint = if (isInWatchlist) Color.Yellow else Color.Gray
+                                tint = if (isOnWatchlist) Color.Yellow else Color.Gray
                             )
                         }
                         Text(
@@ -198,6 +199,7 @@ fun MovieMoreOptionsBottomSheet(
                         rating = selectedRating,
                         onRatingChange = {
                             isWatched = true
+                            isOnWatchlist = false
                             selectedRating = it
                         }
                     )
@@ -209,28 +211,42 @@ fun MovieMoreOptionsBottomSheet(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
+                Spacer(modifier = Modifier.height(10.dp))
             }
-            Spacer(modifier = Modifier.height(24.dp))
             Button(
                 onClick = {
                     CoroutineScope(Dispatchers.Main).launch {
-                        if (isFavorite) onFavoriteClick()
-                        if (isInWatchlist) onWatchlistClick()
+                        onDeleteRating()
+                        onFavoriteClick(false)
+                        onDismiss()
+                        delay(1500)
+                        onSave()
+                    }
+                },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Padding.biggerDefault)
+            ) {
+                Text("Delete entry")
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Button(
+                onClick = {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        onFavoriteClick(isFavorite)
+                        onWatchlistClick(isOnWatchlist)
                         if (selectedRating > 0.0) {
                             onRateClick(selectedRating * 2)
                         } else if (selectedRating == 0.0 && isWatched) {
                             onRateClick(5.0)
                         }
                         onDismiss()
-                        delay(2000)
-                        onSave(movieDetail.id)
+                        delay(1500)
+                        onSave()
                     }
                 },
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Padding.biggerDefault)
             ) {
                 Text("Apply")
             }
-
             Spacer(modifier = Modifier.height(50.dp))
         }
     }

@@ -12,7 +12,7 @@ object DB {
     const val MOVIE_ID = "id"
     const val PERSON_ID = "id"
 
-    const val ADD_RATING_ENDPOINT = "rating"
+    const val RATING_ENDPOINT = "rating"
     const val ADD_FAVORITE_ENDPOINT = "favorite"
     const val ADD_TO_WATCHLIST_ENDPOINT = "watchlist"
 

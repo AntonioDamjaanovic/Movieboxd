@@ -9,6 +9,7 @@ import com.example.movieboxxd.movie_detail.data.remote.models.StatusDto
 import com.example.movieboxxd.movie_detail.data.remote.models.WatchlistMediaDto
 import com.example.movieboxxd.utils.DB
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -33,7 +34,7 @@ interface MovieDetailApiService {
         @Query("page") page: Int = 1
     ): MovieDto
 
-    @POST("${DB.MOVIE_DETAIL_ENDPOINT}/{$MOVIE_ID}/${DB.ADD_RATING_ENDPOINT}")
+    @POST("${DB.MOVIE_DETAIL_ENDPOINT}/{$MOVIE_ID}/${DB.RATING_ENDPOINT}")
     suspend fun rateMovie(
         @Path(MOVIE_ID) movieId: Int,
         @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
@@ -56,4 +57,12 @@ interface MovieDetailApiService {
         @Query("session_id") sessionId: String,
         @Body mediaDto: WatchlistMediaDto
     ): StatusDto
+
+    @DELETE("${DB.MOVIE_DETAIL_ENDPOINT}/{$MOVIE_ID}/${DB.RATING_ENDPOINT}")
+    suspend fun deleteRating(
+        @Path(MOVIE_ID) movieId: Int,
+        @Query("api_key") apiKey: String = BuildConfig.TMDB_API_KEY,
+        @Query("session_id") sessionId: String
+    ): StatusDto
+
 }
