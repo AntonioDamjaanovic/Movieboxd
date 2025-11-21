@@ -134,13 +134,13 @@ fun MovieMoreOptionsBottomSheet(
                         ) {
                             Icon(
                                 imageVector = if (isWatched) Icons.Filled.Visibility else Icons.Outlined.Visibility,
-                                contentDescription = "Watch",
+                                contentDescription = if (isWatched) "Watched" else "Watch",
                                 modifier = Modifier.size(100.dp),
                                 tint = if (isWatched) Color.Yellow else Color.Gray
                             )
                         }
                         Text(
-                            text = "Watch",
+                            text = if (isWatched) "Watched" else "Watch",
                             color = Color.LightGray,
                             fontSize = 16.sp,
                             style = MaterialTheme.typography.bodyMedium
@@ -219,7 +219,7 @@ fun MovieMoreOptionsBottomSheet(
                         onDeleteRating()
                         onFavoriteClick(false)
                         onDismiss()
-                        delay(1500)
+                        delay(2000)
                         onSave()
                     }
                 },
@@ -239,7 +239,7 @@ fun MovieMoreOptionsBottomSheet(
                             onRateClick(5.0)
                         }
                         onDismiss()
-                        delay(1500)
+                        delay(2000)
                         onSave()
                     }
                 },

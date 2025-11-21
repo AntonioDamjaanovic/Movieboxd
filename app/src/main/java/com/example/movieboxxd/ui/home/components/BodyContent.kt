@@ -38,11 +38,12 @@ fun BodyContent(
         modifier = modifier
             .fillMaxWidth()
             .background(color = BackgroundColor)
+            .padding(horizontal = Padding.default, vertical = Padding.verticalSpacing)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Padding.default),
+                .padding(vertical = Padding.biggerItemSpacing),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -63,9 +64,7 @@ fun BodyContent(
                 )
             }
         }
-        LazyRow(
-            modifier = Modifier.padding(horizontal = Padding.default)
-        ) {
+        LazyRow {
             items(trendingMovies) {
                 MovieCoverImage(
                     movie = it,
@@ -76,7 +75,7 @@ fun BodyContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Padding.default),
+                .padding(vertical = Padding.biggerItemSpacing),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -97,9 +96,7 @@ fun BodyContent(
                 )
             }
         }
-        LazyRow(
-            modifier = Modifier.padding(horizontal = Padding.default)
-        ) {
+        LazyRow {
             items(discoverMovies) {
                 MovieCoverImage(
                     movie = it,

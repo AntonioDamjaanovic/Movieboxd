@@ -109,7 +109,9 @@ fun ProfileBodyContent(
                         items(favoriteMovies) { movie ->
                             MovieCoverImage(
                                 movie = movie,
-                                onMovieClick = onMovieClick
+                                onMovieClick = onMovieClick,
+                                height = 150.dp,
+                                width = 100.dp
                             )
                         }
                     }
@@ -157,7 +159,9 @@ fun ProfileBodyContent(
                         items(ratedMovies) { movie ->
                             MovieCoverImage(
                                 movie = movie,
-                                onMovieClick = onMovieClick
+                                onMovieClick = onMovieClick,
+                                height = 150.dp,
+                                width = 100.dp
                             )
                         }
                     }
@@ -205,7 +209,9 @@ fun ProfileBodyContent(
                         items(watchlistMovies) { movie ->
                             MovieCoverImage(
                                 movie = movie,
-                                onMovieClick = onMovieClick
+                                onMovieClick = onMovieClick,
+                                height = 150.dp,
+                                width = 100.dp
                             )
                         }
                     }

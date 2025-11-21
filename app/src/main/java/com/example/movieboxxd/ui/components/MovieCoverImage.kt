@@ -25,8 +25,8 @@ fun MovieCoverImage(
     modifier: Modifier = Modifier,
     movie: Movie,
     onMovieClick: (id: Int) -> Unit,
-    width: Dp = 120.dp,
-    height: Dp = 180.dp
+    width: Dp = 110.dp,
+    height: Dp = 160.dp
 ) {
     val imgRequest = ImageRequest.Builder(LocalContext.current)
         .data("${DB.BASE_IMAGE_URL}${movie.posterPath}")
