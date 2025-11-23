@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -11,6 +13,10 @@ android {
     namespace = "com.example.movieboxxd"
     compileSdk = 36
 
+    val properties = Properties()
+    rootProject.file("local.properties").inputStream().use { properties.load(it) }
+    val tmdbApiKey = properties.getProperty("TMDB_API_KEY")
+
     defaultConfig {
         applicationId = "com.example.movieboxxd"
         minSdk = 26
@@ -19,8 +25,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField("String", "TMDB_API_KEY", "\"${project.findProperty("TMDB_API_KEY")}\"")
+        buildConfigField("String", "TMDB_API_KEY", "\"$tmdbApiKey\"")
     }
 
     buildTypes {
