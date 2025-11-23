@@ -8,20 +8,16 @@ Developed using the official TMDB API, it features seamless browsing, personal l
 ## 📸 Screenshots
 
 <p float="left">
-  <img src="screenshots/homescreen.png" width="200" height="1000"/>
-  <img src="screenshots/more%20movies.png" width="200" height="1000"/>
-  <img src="screenshots/search%20screen.png" width="200" height="1000"/>
-  <img src="screenshots/movie%20detail%20screen%201.png" width="200" height="1000"/>
+  <img src="screenshots/homescreen.jpg" width="200" height="1000"/>
+  <img src="screenshots/more%20movies.jpg" width="200" height="1000"/>
+  <img src="screenshots/search%20screen.jpg" width="200" height="1000"/>
+  <img src="screenshots/movie%20detail%20screen%201.jpg" width="200" height="1000"/>
 </p>
 <p float="left">
-    <img src="screenshots/movie%20detail%20screen%202.png" width="200" height="1000"/>
-    <img src="screenshots/unrated%20movie.png" width="200" height="1000"/>
-    <img src="screenshots/rated%20movie.png" width="200" height="1000"/>
-</p>
-<p float="left">
-    <img src="screenshots/profile%20screen.png" width="200" height="1000"/>
-    <img src="screenshots/profile%20screen%202.png" width="200" height="1000"/>
-    <img src="screenshots/watchlist.png" width="200" height="1000"/>
+    <img src="screenshots/rated%20movie.jpg" width="200" height="1000"/>
+    <img src="screenshots/profile%20screen.jpg" width="200" height="1000"/>
+    <img src="screenshots/profile%20screen%202.jpg" width="200" height="1000"/>
+    <img src="screenshots/watchlist.jpg" width="200" height="1000"/>
 </p>
 
 ---
