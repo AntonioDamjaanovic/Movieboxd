@@ -122,14 +122,11 @@ fun MovieDetailScreen(
                 profileViewModel.fetchRatedMovies()
                 profileViewModel.fetchFavoriteMovies()
                 profileViewModel.fetchWatchlistMovies()
-                detailViewModel.fetchMovieDetailById()
             },
             onWatchlistClick = { isOnWatchlist -> detailViewModel.addMovieToWatchlist(isOnWatchlist) },
             onFavoriteClick = { isFavorite -> detailViewModel.addFavoriteMovie(isFavorite) },
-            onRateClick = { movieRating ->
-                detailViewModel.rateMovie(movieRating)
-            },
-            onDeleteRating = { detailViewModel.deleteMovieRating() },
+            onRateClick = { movieRating -> detailViewModel.rateMovie(movieRating) },
+            onDeleteRating = { detailViewModel.deleteMovieRating() }
         )
     }
 }

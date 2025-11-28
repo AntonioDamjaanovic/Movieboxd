@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.movieboxxd.movie_detail.domain.models.MovieDetail
-import com.example.movieboxxd.ui.detail.DetailViewModel
 import com.example.movieboxxd.ui.theme.BackgroundColor
 import com.example.movieboxxd.ui.theme.DefaultColor
 import com.example.movieboxxd.ui.theme.Padding
@@ -218,6 +217,7 @@ fun MovieMoreOptionsBottomSheet(
                     CoroutineScope(Dispatchers.Main).launch {
                         onDeleteRating()
                         onFavoriteClick(false)
+                        onWatchlistClick(false)
                         onDismiss()
                         delay(2000)
                         onSave()

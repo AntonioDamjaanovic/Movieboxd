@@ -1,6 +1,5 @@
 package com.example.movieboxxd.ui.detail
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +11,7 @@ import com.example.movieboxxd.movie_detail.data.remote.models.WatchlistMediaDto
 import com.example.movieboxxd.movie_detail.domain.models.MovieDetail
 import com.example.movieboxxd.movie_detail.domain.repository.MovieDetailRepository
 import com.example.movieboxxd.utils.DB
+import com.example.movieboxxd.utils.Response
 import com.example.movieboxxd.utils.collectAndHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,8 +41,66 @@ class DetailViewModel @Inject constructor(
             _detailState.update {
                 it.copy(isLoading = false, error = "Movie not found")
             }
-        } else {
-            repository.fetchMovieDetail(movieId).collectAndHandle(
+            return@launch
+        }
+
+        repository.fetchMovieDetail(movieId).collectAndHandle(
+            onError = { error ->
+                _detailState.update {
+                    it.copy(isLoading = false, error = error?.message)
+                }
+            },
+            onLoading = {
+                _detailState.update {
+                    it.copy(isLoading = true, error = null)
+                }
+            }
+        ) { movieDetail ->
+            _detailState.update {
+                it.copy(isLoading = false, error = null, movieDetail = movieDetail)
+            }
+        }
+    }
+
+    fun fetchRecommendedMovies() = viewModelScope.launch {
+        if (movieId == -1) {
+            _detailState.update {
+                it.copy(isLoading = false, error = "Similar movies not found")
+            }
+            return@launch
+        }
+
+        repository.fetchRecommendedMovies(movieId).collectAndHandle(
+            onError = { error ->
+                _detailState.update {
+                    it.copy(isMovieLoading = false, error = error?.message)
+                }
+            },
+            onLoading = {
+                _detailState.update {
+                    it.copy(isMovieLoading = true, error = null)
+                }
+            }
+        ) { movies ->
+            _detailState.update {
+                it.copy(isMovieLoading = false, error = null, recommendedMovies = movies)
+            }
+        }
+    }
+
+    fun rateMovie(movieRating: Double) = viewModelScope.launch {
+        if (movieId == -1) {
+            _detailState.update {
+                it.copy(isLoading = false, error = "Movie not found")
+            }
+            return@launch
+        }
+
+        val sessionId = sessionManager.getSessionId().first()
+        val movieRatingDto = MovieRatingDto(value = movieRating)
+
+        repository.rateMovie(movieId = movieId, sessionId = sessionId, movieRatingDto = movieRatingDto)
+            .collectAndHandle(
                 onError = { error ->
                     _detailState.update {
                         it.copy(isLoading = false, error = error?.message)
@@ -53,69 +111,13 @@ class DetailViewModel @Inject constructor(
                         it.copy(isLoading = true, error = null)
                     }
                 }
-            ) { movieDetail ->
-                _detailState.update {
-                    it.copy(isLoading = false, error = null, movieDetail = movieDetail)
+            ) { status ->
+                if (status.success) {
+                    _detailState.update { it.copy(isLoading = false, error = null) }
+                } else {
+                    _detailState.update { it.copy(isLoading = false, error = "Failed to rate a movie") }
                 }
             }
-        }
-    }
-
-    fun fetchRecommendedMovies() = viewModelScope.launch {
-        if (movieId == -1) {
-            _detailState.update {
-                it.copy(isLoading = false, error = "Similar movies not found")
-            }
-        } else {
-            repository.fetchRecommendedMovies(movieId).collectAndHandle(
-                onError = { error ->
-                    _detailState.update {
-                        it.copy(isMovieLoading = false, error = error?.message)
-                    }
-                },
-                onLoading = {
-                    _detailState.update {
-                        it.copy(isMovieLoading = true, error = null)
-                    }
-                }
-            ) { movies ->
-                _detailState.update {
-                    it.copy(isMovieLoading = false, error = null, recommendedMovies = movies)
-                }
-            }
-        }
-    }
-
-    fun rateMovie(movieRating: Double) = viewModelScope.launch {
-        if (movieId == -1) {
-            _detailState.update {
-                it.copy(isLoading = false, error = "Movie not found")
-            }
-        } else {
-            val sessionId = sessionManager.getSessionId().first()
-            val movieRatingDto = MovieRatingDto(
-                value = movieRating
-            )
-            repository.rateMovie(movieId = movieId, sessionId = sessionId, movieRatingDto = movieRatingDto)
-                .collectAndHandle(
-                    onError = { error ->
-                        _detailState.update {
-                            it.copy(isLoading = false, error = error?.message)
-                        }
-                    },
-                    onLoading = {
-                        _detailState.update {
-                            it.copy(isLoading = true, error = null)
-                        }
-                    }
-                ) { status ->
-                    if (status.success) {
-                        _detailState.update { it.copy(isLoading = false, error = null) }
-                    } else {
-                        _detailState.update { it.copy(isLoading = false, error = "Failed to rate a movie") }
-                    }
-                }
-        }
     }
 
     fun deleteMovieRating() = viewModelScope.launch {
@@ -153,30 +155,31 @@ class DetailViewModel @Inject constructor(
             _detailState.update {
                 it.copy(isLoading = false, error = "Error with marking movie as a favorite")
             }
-        } else {
-            val sessionId = sessionManager.getSessionId().first()
-            val mediaDto = FavoriteMediaDto(
-                favorite = isFavorite,
-                mediaType = "movie",
-                mediaId = movieId,
-            )
-            repository.addFavoriteMovie(accountId = accountId, sessionId = sessionId, mediaDto = mediaDto).collectAndHandle(
-                onError = { error ->
-                    _detailState.update {
-                        it.copy(isLoading = false, error = error?.message)
-                    }
-                },
-                onLoading = {
-                    _detailState.update {
-                        it.copy(isLoading = true, error = null)
-                    }
+            return@launch
+        }
+
+        val sessionId = sessionManager.getSessionId().first()
+        val mediaDto = FavoriteMediaDto(
+            favorite = isFavorite,
+            mediaType = "movie",
+            mediaId = movieId,
+        )
+        repository.addFavoriteMovie(accountId = accountId, sessionId = sessionId, mediaDto = mediaDto).collectAndHandle(
+            onError = { error ->
+                _detailState.update {
+                    it.copy(isLoading = false, error = error?.message)
                 }
-            ) { status ->
-                if (status.success) {
-                    _detailState.update { it.copy(isLoading = false, error = null) }
-                } else {
-                    _detailState.update { it.copy(isLoading = false, error = "Failed to add favorite movie") }
+            },
+            onLoading = {
+                _detailState.update {
+                    it.copy(isLoading = true, error = null)
                 }
+            }
+        ) { status ->
+            if (status.success) {
+                _detailState.update { it.copy(isLoading = false, error = null) }
+            } else {
+                _detailState.update { it.copy(isLoading = false, error = "Failed to add favorite movie") }
             }
         }
     }
@@ -187,33 +190,45 @@ class DetailViewModel @Inject constructor(
             _detailState.update {
                 it.copy(isLoading = false, error = "Error with adding movie to watchlist")
             }
-        } else {
-            val sessionId = sessionManager.getSessionId().first()
-            val mediaDto = WatchlistMediaDto(
-                watchlist = isOnWatchlist,
-                mediaType = "movie",
-                mediaId = movieId,
-            )
-            repository.addMovieToWatchlist(accountId = accountId, sessionId = sessionId, mediaDto = mediaDto).collectAndHandle(
-                onError = { error ->
-                    _detailState.update {
-                        it.copy(isLoading = false, error = error?.message)
-                    }
-                },
-                onLoading = {
-                    _detailState.update {
-                        it.copy(isLoading = true, error = null)
-                    }
+            return@launch
+        }
+
+        val sessionId = sessionManager.getSessionId().first()
+        val mediaDto = WatchlistMediaDto(
+            watchlist = isOnWatchlist,
+            mediaType = "movie",
+            mediaId = movieId,
+        )
+        repository.addMovieToWatchlist(accountId = accountId, sessionId = sessionId, mediaDto = mediaDto).collectAndHandle(
+            onError = { error ->
+                _detailState.update {
+                    it.copy(isLoading = false, error = error?.message)
                 }
-            ) { status ->
-                if (status.success) {
-                    _detailState.update { it.copy(isLoading = false, error = null) }
-                } else {
-                    _detailState.update { it.copy(isLoading = false, error = "Failed to add movie to watchlist") }
+            },
+            onLoading = {
+                _detailState.update {
+                    it.copy(isLoading = true, error = null)
                 }
+            }
+        ) { status ->
+            if (status.success) {
+                _detailState.update { it.copy(isLoading = false, error = null) }
+            } else {
+                _detailState.update { it.copy(isLoading = false, error = "Failed to add movie to watchlist") }
             }
         }
     }
+
+    fun clearOperationStatus() {
+        _detailState.update { it.copy(operationStatus = UiOperationStatus.Idle) }
+    }
+}
+
+sealed class UiOperationStatus {
+    object Idle : UiOperationStatus()
+    object Loading : UiOperationStatus()
+    data class Success(val message: String? = null) : UiOperationStatus()
+    data class Error(val message: String) : UiOperationStatus()
 }
 
 data class DetailState(
@@ -221,5 +236,6 @@ data class DetailState(
     val recommendedMovies: List<Movie> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val isMovieLoading: Boolean = false
+    val isMovieLoading: Boolean = false,
+    val operationStatus: UiOperationStatus = UiOperationStatus.Idle
 )
