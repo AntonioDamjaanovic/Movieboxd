@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,9 +12,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,6 +35,7 @@ import com.example.movieboxxd.profile.domain.models.Profile
 import com.example.movieboxxd.ui.components.MovieCoverImage
 import com.example.movieboxxd.ui.theme.BackgroundColor
 import com.example.movieboxxd.ui.theme.Padding
+import com.example.movieboxxd.ui.theme.SelectedIconColor
 
 @Composable
 fun ProfileBodyContent(
@@ -40,7 +45,8 @@ fun ProfileBodyContent(
     ratedMovies: List<Movie>,
     watchlistMovies: List<Movie>,
     onMovieClick: (Int) -> Unit,
-    onMoreMoviesClick: (String) -> Unit
+    onMoreMoviesClick: (String) -> Unit,
+    onLogoutClick: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -291,6 +297,28 @@ fun ProfileBodyContent(
                         fontWeight = FontWeight.Normal,
                         fontSize = 22.sp,
                         color = Color.Gray
+                    )
+                }
+            }
+            HorizontalDivider()
+
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(Padding.biggerDefault)
+            ) {
+                Button(
+                    onClick = onLogoutClick,
+                    colors = ButtonDefaults.buttonColors(containerColor = SelectedIconColor),
+                    shape = RoundedCornerShape(8.dp),
+                    contentPadding = PaddingValues(Padding.innerButtonPadding)
+                ) {
+                    Text(
+                        text = "Log out",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(horizontal = 50.dp)
                     )
                 }
             }

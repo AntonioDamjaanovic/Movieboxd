@@ -23,9 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.movieboxxd.ui.auth.AuthState
 import com.example.movieboxxd.ui.theme.BackgroundColor
+import com.example.movieboxxd.ui.theme.ErrorMessageColor
 import com.example.movieboxxd.ui.theme.Padding
 import com.example.movieboxxd.ui.theme.SelectedIconColor
 
@@ -67,18 +69,33 @@ fun LoginForm(
                 value = password,
                 placeholder = "Password",
                 imageVector = Icons.Default.Password,
-                onValueChange = { password = it }
+                onValueChange = { password = it },
+                isPassword = true
             )
             Button(
                 onClick = { onLoginClick(username, password) },
-                colors = ButtonDefaults.buttonColors(containerColor = SelectedIconColor),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = SelectedIconColor,
+                    disabledContainerColor = SelectedIconColor,
+                    contentColor = Color.White,
+                    disabledContentColor = Color.White
+                ),
                 shape = RoundedCornerShape(8.dp),
                 contentPadding = PaddingValues(Padding.innerButtonPadding),
+                enabled = username.isNotBlank() && password.isNotBlank(),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = "LOGIN",
                     style = MaterialTheme.typography.titleMedium
+                )
+            }
+
+            authState.error?.let {
+                Text(
+                    text = "Username and password don't match",
+                    color = ErrorMessageColor,
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         }

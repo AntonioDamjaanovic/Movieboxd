@@ -19,7 +19,8 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     profileViewModel: ProfileViewModel = hiltViewModel(),
     onMovieClick: (Int) -> Unit,
-    onMoreMoviesClick: (String) -> Unit
+    onMoreMoviesClick: (String) -> Unit,
+    onLogoutClick: () -> Unit
 ) {
     val state by profileViewModel.profileState.collectAsStateWithLifecycle()
 
@@ -52,6 +53,7 @@ fun ProfileScreen(
                             watchlistMovies = state.watchlistMovies,
                             onMovieClick = onMovieClick,
                             onMoreMoviesClick = onMoreMoviesClick,
+                            onLogoutClick = onLogoutClick,
                             modifier = Modifier
                                 .weight(0.85f)
                         )

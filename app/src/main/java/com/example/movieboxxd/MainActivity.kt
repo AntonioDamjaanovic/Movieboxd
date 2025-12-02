@@ -1,5 +1,6 @@
 package com.example.movieboxxd
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,9 +21,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.movieboxxd.ui.theme.SelectedIconColor
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.movieboxxd.ui.auth.AuthViewModel
 import com.example.movieboxxd.ui.navigation.BottomNavigationItem
 import com.example.movieboxxd.ui.navigation.NavigationGraph
 import com.example.movieboxxd.ui.navigation.Route
@@ -43,7 +47,10 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun App() {
+    fun App(
+        authViewModel: AuthViewModel = hiltViewModel()
+    ) {
+        val authState by authViewModel.authState.collectAsStateWithLifecycle()
         val navController = rememberNavController()
         val currentBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStackEntry?.destination?.route
@@ -68,36 +75,41 @@ class MainActivity : ComponentActivity() {
 
         Scaffold(
             bottomBar = {
-                NavigationBar(
-                    containerColor = DefaultColor
-                ) {
-                    bottomNavigationItems.forEach { item ->
-                        NavigationBarItem(
-                            icon = {
-                                Icon(
-                                    imageVector = if (currentDestination == item.route) item.selectedIcon
+                if (authState.isLoggedIn) {
+                    NavigationBar(
+                        containerColor = DefaultColor
+                    ) {
+                        bottomNavigationItems.forEach { item ->
+                            NavigationBarItem(
+                                icon = {
+                                    Icon(
+                                        imageVector = if (currentDestination == item.route) item.selectedIcon
                                         else item.unselectedIcon,
-                                    contentDescription = item.route,
-                                    tint = if (currentDestination == item.route) SelectedIconColor else Color.Gray
-                                )
-                            },
-                            selected = currentDestination == item.route,
-                            onClick = {
-                                if (currentDestination != item.route) {
-                                    navController.navigate(item.route) {
-                                        launchSingleTop = true
-                                        restoreState = true
+                                        contentDescription = item.route,
+                                        tint = if (currentDestination == item.route) SelectedIconColor else Color.Gray
+                                    )
+                                },
+                                selected = currentDestination == item.route,
+                                onClick = {
+                                    if (currentDestination != item.route) {
+                                        navController.navigate(item.route) {
+                                            launchSingleTop = true
+                                            restoreState = true
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
         ) { innerPadding ->
             NavigationGraph(
                 navController = navController,
-                modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())
+                authViewModel = authViewModel,
+                modifier = if (authState.isLoggedIn) Modifier
+                    .padding(bottom = innerPadding.calculateBottomPadding())
+                    else Modifier
             )
         }
     }

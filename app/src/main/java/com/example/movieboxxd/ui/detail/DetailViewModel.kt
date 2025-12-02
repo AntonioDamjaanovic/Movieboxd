@@ -218,17 +218,6 @@ class DetailViewModel @Inject constructor(
             }
         }
     }
-
-    fun clearOperationStatus() {
-        _detailState.update { it.copy(operationStatus = UiOperationStatus.Idle) }
-    }
-}
-
-sealed class UiOperationStatus {
-    object Idle : UiOperationStatus()
-    object Loading : UiOperationStatus()
-    data class Success(val message: String? = null) : UiOperationStatus()
-    data class Error(val message: String) : UiOperationStatus()
 }
 
 data class DetailState(
@@ -236,6 +225,5 @@ data class DetailState(
     val recommendedMovies: List<Movie> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val isMovieLoading: Boolean = false,
-    val operationStatus: UiOperationStatus = UiOperationStatus.Idle
+    val isMovieLoading: Boolean = false
 )

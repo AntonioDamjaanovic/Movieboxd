@@ -27,17 +27,18 @@ class AuthViewModel @Inject constructor(
     }
 
     fun login(username: String, password: String) = viewModelScope.launch {
-        repository.loginUser(username, password).collectAndHandle(
-            onError = { error ->
-                _authState.update {
-                    it.copy(isLoading = false, error = error?.message)
+        repository.loginUser(username, password)
+            .collectAndHandle(
+                onError = { error ->
+                    _authState.update {
+                        it.copy(isLoading = false, error = error?.message)
+                    }
+                },
+                onLoading = {
+                    _authState.update {
+                        it.copy(isLoading = true, error = null)
+                    }
                 }
-            },
-            onLoading = {
-                _authState.update {
-                    it.copy(isLoading = true, error = null)
-                }
-            }
         ) { sessionId ->
             _authState.update {
                 it.copy(
@@ -51,17 +52,18 @@ class AuthViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch {
-        repository.logoutUser().collectAndHandle(
-            onError = { error ->
-                _authState.update {
-                    it.copy(isLoading = false, error = error?.message)
+        repository.logoutUser()
+            .collectAndHandle(
+                onError = { error ->
+                    _authState.update {
+                        it.copy(isLoading = false, error = error?.message)
+                    }
+                },
+                onLoading = {
+                    _authState.update {
+                        it.copy(isLoading = true, error = null)
+                    }
                 }
-            },
-            onLoading = {
-                _authState.update {
-                    it.copy(isLoading = true, error = null)
-                }
-            }
         ) {
             _authState.update { AuthState() }
         }

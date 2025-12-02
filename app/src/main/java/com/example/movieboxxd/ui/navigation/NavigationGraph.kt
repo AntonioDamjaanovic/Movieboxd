@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -30,7 +29,7 @@ import com.example.movieboxxd.utils.DB
 fun NavigationGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    authViewModel: AuthViewModel = hiltViewModel()
+    authViewModel: AuthViewModel
 ) {
    val authState by authViewModel.authState.collectAsStateWithLifecycle()
 
@@ -57,9 +56,7 @@ fun NavigationGraph(
         ) {
             LoginScreen(
                 authState = authState,
-                onLoginClick = { username, password ->
-                    authViewModel.login(username, password)
-                },
+                onLoginClick = authViewModel::login,
                 onAuthenticated = {
                     navController.navigate(Route.Home.route) {
                         popUpTo(Route.Login.route) { inclusive = true }
@@ -71,16 +68,6 @@ fun NavigationGraph(
         composable(
             route = Route.Home.route
         ) {
-            if (!authState.isLoggedIn) {
-                LaunchedEffect(Unit) {
-                    navController.navigate(Route.Login.route) {
-                        popUpTo(0) { inclusive = true }
-                        launchSingleTop = true
-                    }
-                }
-                return@composable
-            }
-
             HomeScreen(
                 onMovieClick = { movieId ->
                     navController.navigate(
@@ -162,7 +149,8 @@ fun NavigationGraph(
                     navController.navigate(
                         Route.ProfileMovies.getRoute(type)
                     )
-                }
+                },
+                onLogoutClick = authViewModel::logout
             )
         }
         composable(
